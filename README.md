@@ -1,4 +1,4 @@
-# 🌍 Tripzy – AI Travel Planner
+# 🌍 Tripzy – AI Travel Planner (In Development)
 
 Tripzy is an AI-powered travel planning web application that generates personalized trip itineraries based on user preferences such as destination, budget, number of people, and trip duration. It leverages modern full-stack technologies along with AI to provide a seamless and intelligent travel planning experience.
 
