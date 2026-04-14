@@ -17,7 +17,7 @@ const ColorAndShadowStyles = {
 }
 
 const SizeStyling = {
-    "primary" : "",
+    "primary" : "w-[6rem] h-[2rem]",
     "secondry" : "w-[15rem] h-[3.5rem]",
     "tertiary" : ""
 }
@@ -25,10 +25,10 @@ const SizeStyling = {
 const TextColorStyling = {
     "black" : "text-black font-bold" , 
     "grey" : "" ,
-    "blue" : "" ,
+    "blue" : "text-blue-500 font-bold" ,
     "white" : "text-white font-bold" 
 }
-const defaultStyles = "flex justify-center items-center rounded-md";
+const defaultStyles = "flex justify-center items-center rounded-md hover:animate-[bounce_1.5s_ease-in-out_infinite]";
 export function Button(props:ButtonStyles)
 {
     return<>
