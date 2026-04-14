@@ -93,7 +93,10 @@ Tripzy is an AI-powered travel planning web application that generates personali
 ---
 
 ## Application Images :-
-<img width="1917" height="927" alt="image" src="https://github.com/user-attachments/assets/b9ab07af-d23c-4ae6-a0d8-f2f0a1609ad2" />
+
+<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/aa9275ca-e575-4d7d-bb51-9d4172612be8" />
+<img width="1919" height="926" alt="Screenshot 2026-04-14 111230" src="https://github.com/user-attachments/assets/ca441969-6d30-4bbf-b7fb-29685e1222fa" />
+
 
 
 ## 🏗️ System Architecture
