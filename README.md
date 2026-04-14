@@ -1,3 +1,7 @@
+<img width="1919" height="931" alt="Screenshot 2026-04-14 193007" src="https://github.com/user-attachments/assets/9b60b4e0-4003-412f-95f4-fc0a3fcfd54c" />
+<img width="1919" height="927" alt="Screenshot 2026-04-14 193027" src="https://github.com/user-attachments/assets/ced03343-d239-44ec-96d3-50d7f7d9172d" />
+<img width="1919" height="926" alt="Screenshot 2026-04-14 193016" src="https://github.com/user-attachments/assets/e8a8477b-75a4-4f64-a250-a877e12180b3" />
+<img width="1919" height="931" alt="Screenshot 2026-04-14 193007" src="https://github.com/user-attachments/assets/d626fee0-6d29-4f64-8a91-05aa2c689e58" />
 # 🌍 Tripzy – AI Travel Planner (In Development)
 
 Tripzy is an AI-powered travel planning web application that generates personalized trip itineraries based on user preferences such as destination, budget, number of people, and trip duration. It leverages modern full-stack technologies along with AI to provide a seamless and intelligent travel planning experience.
@@ -98,7 +102,9 @@ Tripzy is an AI-powered travel planning web application that generates personali
 <img width="1919" height="926" alt="Screenshot 2026-04-14 111230" src="https://github.com/user-attachments/assets/ca441969-6d30-4bbf-b7fb-29685e1222fa" />
 <img width="1919" height="924" alt="image" src="https://github.com/user-attachments/assets/813abb11-8ebf-44dc-a695-801f5683d954" />
 <img width="1919" height="925" alt="Screenshot 2026-04-14 115856" src="https://github.com/user-attachments/assets/63ad726d-4522-4623-bfbb-23a78680a183" />
-
+<img width="1919" height="931" alt="Screenshot 2026-04-14 193007" src="https://github.com/user-attachments/assets/e9930164-66c3-4c03-832e-28289b5ef9c8" />
+<img width="1919" height="926" alt="Screenshot 2026-04-14 193016" src="https://github.com/user-attachments/assets/31caefd8-411d-4512-a21d-64b8dd1fff04" />
+<img width="1919" height="927" alt="Screenshot 2026-04-14 193027" src="https://github.com/user-attachments/assets/a36b3572-5a7e-4920-b136-50740fdb3cb7" />
 
 
 
