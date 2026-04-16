@@ -8,10 +8,11 @@ import Hotel2 from "../Images/Hotel1.jpg"
 import Hotel3 from "../Images/Hotel1.jpg"
 import Hotel4 from "../Images/Hotel4.jpg"
 import Hotel5 from "../Images/Hotel5.jpg"
-
+import { Hotels } from "../Components/Hotels"
+import { PlanDay } from "../Components/Days"
 
 export function DonePlanning()
-{
+{  
     return<>
         <Navbar/>
         <div className="pl-[2rem] pr-[2rem] pt-[2rem]">
@@ -81,13 +82,16 @@ export function DonePlanning()
                     <button aria-label="name" className=" bg-slate-200 p-[0.7rem] rounded-full flex justify-center items-center"><Right/></button>
                 </div>
             </div>
-            <div>
-                <div>
-
-                </div>
+            <div className="mt-[2rem] mb-[3rem] flex flex-row h-[500px] overflow-x-auto items-start gap-4 custom-scrollbar">
+                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5}/>
+                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5}/>
+                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5}/>
+                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5}/>
+                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5}/>
             </div>
-            <div></div>
+            <div>
+                <PlanDay DayNumber={1} NameOfPlanDay="Arrival & Electric Evenings" Date="Monday , October 14"/> 
+            </div>
         </div>
-
     </>
 }
