@@ -5,6 +5,7 @@ import { SignUp } from "./Pages/SignUp";
 import { PlanNewTrip } from "./Pages/PlanNewTrip";
 import { Planning } from "./Pages/Planning";
 import { DonePlanning } from "./Pages/PlanningDone";
+import { MyTrips } from "./Pages/MyTrips";
 
 function App() {
   return<>
@@ -13,7 +14,8 @@ function App() {
     {/* <SignUp/> */}
     {/* <PlanNewTrip/> */}
     {/* <Planning/> */}
-    <DonePlanning/>
+    {/* <DonePlanning/> */}
+    <MyTrips/>
   </>
 }
 

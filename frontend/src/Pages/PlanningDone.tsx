@@ -10,6 +10,7 @@ import Hotel4 from "../Images/Hotel4.jpg"
 import Hotel5 from "../Images/Hotel5.jpg"
 import { Hotels } from "../Components/Hotels"
 import { PlanDay } from "../Components/Days"
+import { Footer } from "../Components/Footer"
 
 export function DonePlanning()
 {  
@@ -93,5 +94,6 @@ export function DonePlanning()
                 <PlanDay DayNumber={1} NameOfPlanDay="Arrival & Electric Evenings" Date="Monday , October 14"/> 
             </div>
         </div>
+        <Footer/>
     </>
 }
