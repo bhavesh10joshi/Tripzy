@@ -1,7 +1,7 @@
 import { PlanModel} from "../../DB/db";
 import { ServerErrors , ClientErrorStatusCodes , SuccessStatusCodes} from "../../StatusCodes/StatusCodes";
 import { Middleware } from "../../Middleware/middleware";
-import { generateItinerary } from "../Services/OpenApi";
+import { generateItinerary } from "../Services/GeminiApi";
 import { retry } from "../Services/retry";
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
@@ -15,7 +15,7 @@ PlanRouter.post("/New" , Middleware , async function(req:any , res:any)
     try{
         const PlanData = await retry(()=>generateItinerary(req.body) , 3);
         const done = await PlanModel.create({
-            _id : UserId ,
+            userId : UserId ,
             ...PlanData , 
             UniqueId : uuidv4()
         });
@@ -36,6 +36,7 @@ PlanRouter.post("/New" , Middleware , async function(req:any , res:any)
     }   
     catch(e)
     {
+        console.log(e);
         res.status(ServerErrors.InternalServerError).json({
             msg : "Internal Server Error Occurred !"
         });

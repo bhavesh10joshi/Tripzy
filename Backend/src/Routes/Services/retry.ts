@@ -6,6 +6,7 @@ export const retry = async (fn: Function, retries = 3) => {
       return await fn();
     } catch (err) {
       lastError = err;
+      console.log(err);
       console.log(`Retry ${i + 1} failed`);
     }
   }

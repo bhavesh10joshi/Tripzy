@@ -46,6 +46,7 @@ UserRouter.post("/SignUp", async function(req:any , res:any)
             }
             catch(e)
             {
+                console.log(e);
                 res.status(ServerErrors.InternalServerError).json({
                     msg : "Internal Server Error Occured !"
                 });
@@ -62,6 +63,7 @@ UserRouter.post("/SignUp", async function(req:any , res:any)
     }
     catch(e)
     {
+        console.log(e);
         res.status(ServerErrors.InternalServerError).json({
             msg : "Internal Server Error Occured !"
         });
@@ -103,6 +105,7 @@ UserRouter.post("/Login" , async function(req : any , res : any)
             }
             catch(e)
             {
+                console.log(e);
                 res.status(ClientErrorStatusCodes.ResourceNotFound).json({
                     msg : "Account Dosen't Exists !"
                 });
@@ -119,6 +122,7 @@ UserRouter.post("/Login" , async function(req : any , res : any)
     }
     catch(e)
     {
+        console.log(e);
         res.status(ClientErrorStatusCodes.ResourceNotFound).json({
             msg : "Account Dosen't Exists !"
         });

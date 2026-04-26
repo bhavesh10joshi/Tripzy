@@ -9,7 +9,7 @@ export const HotelZod = z.object({
   NameOfHotel: z.string(),
   LocationOfHotel: z.string(),
   PricePerNight: z.number(),
-  HotelStars: z.number().min(1).max(5),
+  HotelStars: z.number(),
   EstimatedBudget: z.number()
 });
 
@@ -21,10 +21,15 @@ export const EventZod = z.object({
   EventDescription: z.string()
 });
 
+export const DayEventZod = z.object({
+  Day: z.number(),
+  Events: z.array(EventZod)
+});
+
 export const PlanZod = z.object({
   planName: z.string(),
   planDate: z.string(),
   numberOfPeople: z.number(),
-  hotelList: z.array(HotelZod).min(1),
-  events: z.array(EventZod).min(1)
+  hotelList: z.array(HotelZod),
+  events: z.array(DayEventZod)
 });
