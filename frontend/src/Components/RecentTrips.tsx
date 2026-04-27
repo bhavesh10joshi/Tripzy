@@ -4,9 +4,11 @@ import baali from "../Images/baali.jpg"
 import jodhpur from "../Images/jodhpur.jpg"
 import { Calender } from "../Ui/Icons/Calender"
 import Russia from "../Images/Russia.jpg"
+import { useNavigate } from "react-router-dom"
 
 export function RecentTrips()
 {
+    const Navigation = useNavigate();
     return<>
         <div className="mt-[8rem] pl-[7rem] pr-[7rem] w-full">
             <div className="flex w-full">

@@ -1,9 +1,11 @@
 import Globe from "../Images/Globe.png"
 import { Button } from "../Ui/Buttons/Button"
 import { Rocket } from "../Ui/Icons/Rocket"
+import { useNavigate } from "react-router-dom"
 
 export function Hero()
 {
+    const Navigation = useNavigate();
     return<>
         <div className="gap-12 h-full flex justify-center items-center mt-[2rem] pl-[5rem] pr-[5rem] bg-slate-100 pt-[3rem] pb-[3rem] ml-[2rem] mr-[2rem] rounded-md">
             <div>
@@ -23,10 +25,10 @@ export function Hero()
                 </div>
                 <div className="flex justify-start items-center mt-[3rem] gap-10">
                     <div>
-                        <Button color="blue" size="secondry" textColor="white" text="Plan Your Next Trip" BackIcon={<Rocket/>}/>
+                        <Button color="blue" size="secondry" textColor="white" text="Plan Your Next Trip" BackIcon={<Rocket/>} OnClick={()=>function(){Navigation("/Tripzy/User/Plan/NewTrip")}}/>
                     </div>
                     <div>
-                        <Button color="grey" size="secondry" textColor="black" text="View Showcase" />
+                        <Button color="grey" size="secondry" textColor="black" text="View Showcase" OnClick={()=>function(){Navigation("/Tripzy/User/MyTrips/View/All");}}/>
                     </div>
                 </div>
             </div>
