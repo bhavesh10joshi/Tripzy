@@ -5,9 +5,40 @@ import { King } from "../Ui/Icons/King"
 import { RichDollar } from "../Ui/Icons/RichDollar"
 import { Balance } from "../Ui/Icons/Balance"
 import { Magic } from "../Ui/Icons/Magic"
+import { useNavigate } from "react-router-dom"
+import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { useState } from "react"
+import { useRef } from "react"
 
 export function PlanNewTrip()
 {
+    const [InProgress , InProgressState] = useState(false);
+    const [NoofPeople , SetNoofPeople] = useState(0);
+    const [NoofDays , SetNoofDays] = useState(0);
+    const [BudgetType , SetbudgetType] = useState("");
+    const Navigation = useNavigate(); 
+    const LocationRef = useRef(null);
+
+    async function BackendCall()
+    { 
+        const payload = {
+            destination: LocationRef.current.value,
+            numberOfPeople: NoofPeople,
+            budgetType: BudgetType,
+            // startDate: "2026-05-01",
+            // endDate: "2026-05-05"
+            // This has to be fixed in the backend , insted of specific dates i want to pass no of days trip
+            // to generate an intinary
+        }
+        try
+        {
+
+        }
+        catch(e)
+        {
+
+        }
+    }
     return<>
     <div>
         <Navbar/>
@@ -70,15 +101,19 @@ export function PlanNewTrip()
                         </div>
                         <div className="mt-[1rem] bg-white flex justify-center items-center p-[1rem] rounded-md border border-black ">
                             <div className="bg-slate-200 text-slate-600 font-mono font-bold text-[1.8rem] pl-[1rem] pr-[1rem] flex justify-center items-center rounded-full shadow-lg shadow-slate-600/50">
-                                <button>
+                                <button onClick={() => SetNoofPeople(function(){
+                                    return NoofPeople-1
+                                })}>
                                     -
                                 </button>
                             </div>
                             <div className="text-mono font-bold text-[1.5rem] ml-[2rem] mr-[2rem]">
-                                0
+                                {NoofPeople}
                             </div>
                             <div className="bg-slate-100 text-slate-600 font-mono font-bold text-[1.8rem] pl-[1rem] pr-[1rem] flex justify-center items-center rounded-full shadow-lg shadow-slate-600/50">
-                                <button>
+                                <button onClick={() => SetNoofPeople(function(){
+                                    return NoofPeople+1
+                                })}>
                                     +
                                 </button>
                             </div>
@@ -90,15 +125,19 @@ export function PlanNewTrip()
                         </div>
                         <div className="mt-[1rem] bg-white flex justify-center items-center p-[1rem] rounded-md border border-black ">
                             <div className="bg-slate-200 text-slate-600 font-mono font-bold text-[1.8rem] pl-[1rem] pr-[1rem] flex justify-center items-center rounded-full shadow-lg shadow-slate-600/50">
-                                <button>
+                                <button onClick={() => SetNoofDays(function(){
+                                    return NoofDays-1
+                                })}>
                                     -
                                 </button>
                             </div>
                             <div className="text-mono font-bold text-[1.5rem] ml-[2rem] mr-[2rem]">
-                                0
+                                {NoofDays}
                             </div>
                             <div className="bg-slate-100 text-slate-600 font-mono font-bold text-[1.8rem] pl-[1rem] pr-[1rem] flex justify-center items-center rounded-full shadow-lg shadow-slate-600/50">
-                                <button>
+                                <button onClick={() => SetNoofDays(function(){
+                                    return NoofDays+1
+                                })}>
                                     +
                                 </button>
                             </div>

@@ -5,12 +5,53 @@ import jodhpur from "../Images/jodhpur.jpg"
 import { Calender } from "../Ui/Icons/Calender"
 import Russia from "../Images/Russia.jpg"
 import { useNavigate } from "react-router-dom"
+import { Backend_Url } from "../BackendUrl/BackendUrl"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 export function RecentTrips()
 {
+    const[LoadingState ,  SetLoadingState] = useState(false);
+    const[ErrorState , SetErrorState] = useState(false);
+    const[ErrorDetail , SetErrorDetail] = useState("");
+    const[TripsData , SetTripsData] = useState({});
+    // useEffect(function(){
+    //     BackendCall();
+    // });
+    function BackendCall()
+    {
+        const token = localStorage.getItem("token");
+        const payload:any = {
+            token : token
+        } 
+        try{
+            SetLoadingState(true);
+            const result:any = axios.get(`${Backend_Url}/Tripzy/Api/TravelPlan/Existing/Show/All` , payload); 
+            if(result)
+            {
+                SetTripsData(result.data);
+            }
+            else
+            {
+                SetLoadingState(false);
+                SetErrorState(true);
+                SetErrorDetail(result.error);
+                return;
+            }
+        }
+        catch(e)
+        {
+            SetLoadingState(false);
+            SetErrorState(true);
+            SetErrorDetail(e);
+            return;
+        }
+    }
     const Navigation = useNavigate();
     return<>
-        <div className="mt-[8rem] pl-[7rem] pr-[7rem] w-full">
+        {
+        !LoadingState
+        ?<div className="mt-[8rem] pl-[7rem] pr-[7rem] w-full">
             <div className="flex w-full">
                 <div>
                     <div className="text-black font-semibold text-[1.7rem]">Recent Trips</div>
@@ -70,7 +111,7 @@ export function RecentTrips()
                             </div>
                         </div>
                     </button>
-                    <button aria-label="name" className="mt-[3rem] rounded-md bg-blue-200 border border-blue-300 h-[2rem] w-full hover:animate-bounce">
+                    <button aria-label="name" className="mt-[3rem] rounded-md bg-blue-200 border border-blue-300 h-[2rem] w-full hover:animate-bounce" onClick={() => function(){Navigation("/Tripzy/User/MyTrips/View/All");}}>
                         <div className="flex justify-center items-center text-[1rem] font-mono font-semibold text-blue-300 h-full w-full">
                             See All
                         </div>
@@ -78,5 +119,61 @@ export function RecentTrips()
                 </div>
             </div>
         </div>
+        :<div className="mt-[8rem] pl-[4rem] pr-[4rem] w-full rounded-md">
+            <div className="w-full bg-slate-300 pl-[4rem] pr-[4rem] pt-[2rem] pb-[2rem] rounded-md">
+            <div className="flex w-full">
+                <div className="animate-pulse">
+                    <div className="text-black font-semibold text-[1.7rem] bg-slate-200 w-[15rem] h-[6rem]"></div>
+                    <div className="text-slate-700 font-[0.9rem] w-[25rem] h-[2rem] bg-slate-200 mt-[1rem] rounded-md"></div>
+                </div>
+                <div className="flex-1 ">
+                    <div className="w-full flex justify-end items-center animate-pulse">
+                        <button aria-label="name" className="w-[10rem] h-[4rem] bg-slate-200 rounded-md"></button>
+                    </div>
+                </div>
+            </div>
+            <div className="flex  mt-[3rem] pb-[2rem] bg-slate-200 animate-pulse">
+                <button aria-label="name" className=" pl-[2rem] pt-[2rem] rounded-md">
+                    <div className="shadow-lg bg-slate-500">
+                        <div className="w-[12rem] h-[10rem] ">
+                        </div>
+                        <div className=" pt-[2rem] pr-[2rem] pl-[2rem] pb-[2rem]">
+                            <div className="flex">
+                                <div>
+                                </div>
+                                <div className="font-mono font-bold text-slate-600 ml-[1rem]">
+                                </div>
+                            </div>
+                            <div className="mt-[1rem] text-[1.4rem] font-semibold text-slate-800 flex justify-start">
+                            </div>
+                        </div>
+                    </div>
+                </button>
+                <div className="pl-[2rem] pt-[2rem] flex-1 flex-col pr-[2rem]">
+                    <button aria-label="name" className="flex hover:animate-bounce">
+                        <div>
+                        </div>
+                        <div className="ml-[2rem] flex justify-center items-center flex-col">
+                            <div className="text-[1rem] text-slate-500 font-mono">
+                            </div>
+                            <div className="text-[1.3rem] font-semibold text-slate-700">
+                            </div>
+                        </div>
+                    </button>
+                    <button aria-label="name" className="flex mt-[2rem] hover:animate-bounce">
+                        <div className="ml-[2rem] flex justify-center items-center flex-col">
+                            <div className="text-[1rem] text-slate-500 font-mono">
+                            </div>
+                            <div className="text-[1.3rem] font-semibold text-slate-700">
+                            </div>
+                        </div>
+                    </button>
+                    <button aria-label="name" className="mt-[3rem] rounded-md bg-slate-400 animate-pulse border  h-[2rem] w-full" onClick={() => function(){Navigation("/Tripzy/User/MyTrips/View/All");}}>
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+        }
     </>
 }
