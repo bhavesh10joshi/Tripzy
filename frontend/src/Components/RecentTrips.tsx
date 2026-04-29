@@ -41,9 +41,10 @@ export function RecentTrips()
         }
         catch(e)
         {
+            const error:any = e;
             SetLoadingState(false);
             SetErrorState(true);
-            SetErrorDetail(e);
+            SetErrorDetail(error);
             return;
         }
     }

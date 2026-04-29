@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateItinerary = async (input: any) => {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash" // working in your case
+    model: "gemini-2.5-flash"
   });
 
   const prompt = `
@@ -40,7 +40,7 @@ FORMAT:
   ],
   "events": [
     {
-      "Time": "Day X - Morning (YYYY-MM-DD)",
+      "Time": "Day X - Morning",
       "NameOfEvent": "string",
       "TotalTimeConsumption": number,
       "PriceType": "string",
@@ -53,7 +53,7 @@ INPUT:
 Destination: ${input.destination}
 People: ${input.numberOfPeople}
 Budget: ${input.budgetType}
-Dates: ${input.startDate} to ${input.endDate}
+Number of Days: ${input.numberOfDays}
 `;
 
   try {
@@ -69,7 +69,6 @@ Dates: ${input.startDate} to ${input.endDate}
 
     parsed.events = groupEventsByDay(parsed.events);
 
-    // ✅ Validate
     return PlanZod.parse(parsed);
 
   } catch (error: any) {

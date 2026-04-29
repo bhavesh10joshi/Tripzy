@@ -22,7 +22,7 @@ PlanRouter.post("/New" , Middleware , async function(req:any , res:any)
         if(done)
         {
             res.status(SuccessStatusCodes.ResourceCreated).json({
-                Data : PlanData
+                UniqueId : done.UniqueId
             });
             return;
         }

@@ -3,17 +3,20 @@ import { Clock } from "../Ui/Icons/Clock"
 
 interface TimeCardStyle
 {
-    Time : string ,
-    TotalTimeConsumption : string ,
-    MoneyType : string , 
-    PlanName : string , 
-    PlanDescription : string
+    Time ?: string ,
+    TotalTimeConsumption ?: string ,
+    MoneyType ?: string , 
+    PlanName ?: string , 
+    PlanDescription ?: string,
+    Type : "Loading" | "Loaded" 
 }
 
 export function TimeCard(props : TimeCardStyle)
 {
     return<>
-    <div className="flex ml-[2rem]">
+    {
+    props.Type == "Loaded"
+    ?<div className="flex ml-[2rem]">
         <div className="w-[0.5rem] h-[18rem] bg-blue-300 mt-[2rem]"></div>
         <div className="bg-slate-200 rounded-md p-[2rem] w-[70rem] h-[18rem] gap-12 mt-[2rem] flex justify-center items-center">
             <div className="flex justify-start items-start flex-col w-1/4">
@@ -47,5 +50,31 @@ export function TimeCard(props : TimeCardStyle)
             </div>
         </div>
     </div>
+    :<div className="flex ml-[2rem]">
+        <div className="w-[0.5rem] h-[18rem] bg-blue-300 mt-[2rem]"></div>
+        <div className="bg-slate-200 rounded-md p-[2rem] w-[70rem] h-[18rem] gap-12 mt-[2rem] flex justify-center items-center">
+            <div className="flex justify-start items-start flex-col w-1/4">
+                <div className="w-full">
+                    <div className=" text-blue-300 font-bold text-[1.5rem] flex justify-start items-center w-[17rem] h-[6rem] bg-slate-500 rounded-md animate-pulse">
+                    </div>
+                </div>
+                <div className="w-full flex justify-start items-center mt-[1rem]">
+                    <div className=" gap-3 bg-[#5eead4] rounded-md w-[7rem] h-[2rem] flex justify-center items-center animate-pulse">
+                    </div>
+                </div>
+                <div className="w-full flex justify-start items-center mt-[1rem]">
+                   <div className="gap-3 w-[5rem] h-[2rem] flex justify-center items-center bg-slate-500 rounded-md animate-pulse">
+                   </div>
+                </div>
+            </div>
+            <div className="w-3/4 flex justify-center items-start flex-col">
+                <div className="text-black font-bold text-[1.7rem] bg-slate-500 rounded-md animate-pulse w-full h-[4rem]">
+                </div>
+                <div className="text-black font-light text-[1.2rem] mt-[2rem] bg-slate-500 rounded-md animate-pulse w-full h-[7rem] ">
+                </div>
+            </div>
+        </div>
+    </div>
+    }
     </>
 }
