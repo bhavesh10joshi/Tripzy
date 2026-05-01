@@ -12,11 +12,20 @@ export function MyTrips()
 {
     const Navigation = useNavigate();
     const [MyTripsData , SetMyTripsData] = useState({});
-    const [LoadingState , SetLoadingState] = useState(true);
+    const [LoadingState , SetLoadingState] = useState(false);
+    const [PlanUniueId , SetPlanUniqueId] = useState("");
     // useEffect(function()
     // {
-        
+    //         const TimeOut = setTimeout(()=>BackendCall() , 2000);
+    //         return clearTimeout(TimeOut);
     // })
+    // This function has to be made to put inside the PastPlannedTrips Components
+    function Move(UniqueId:any)
+    {
+        localStorage.setItem("PlanUniqueId" , PlanUniueId);
+        Navigation("");
+        return;
+    }
     async function BackendCall()
     {
         const token = localStorage.getItem("token");
@@ -48,6 +57,7 @@ export function MyTrips()
             return;
         }
     }
+
     return<>
         <Navbar/>
         <div className="pb-[2rem] pt-[5rem] pl-[3rem] pr-[3rem]">

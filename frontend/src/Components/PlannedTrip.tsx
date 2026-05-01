@@ -8,7 +8,8 @@ interface DataStye
     Date ?: string , 
     ImageOfthePlan ?: string ,
     PlanDescription ?: string ,
-    Type : "Loaded" | "Loading"
+    Type : "Loaded" | "Loading",
+    OnClick ?: () => void , 
 }
 
 export function PastPlannedTrips(props:DataStye)
@@ -16,15 +17,16 @@ export function PastPlannedTrips(props:DataStye)
     return<>
     {
     props.Type == "Loaded"
-    ?<button className="w-full">
+    ?
+    <div className="w-full cursor-pointer" title="View planned trip">
         <div className="bg-slate-100 p-[2rem] flex rounded-md mt-[2rem] w-full">
             <img src={props.ImageOfthePlan} alt={props.NameofItienary} className=" h-[30rem] rounded-md "/>
             <div className="ml-[2rem]">
                 <div className="w-full flex justify-end items-center ">
                     <div className="bg-white rounded-md w-[4rem] h-[3rem] flex justify-center items-center">
-                       <button aria-label="name">
+                       <button aria-label="name" onClick={}>
                             <Bin/>
-                       </button>
+                        </button>
                     </div>
                 </div>
                 <div className="text-[3rem] mt-[1rem] font-bold flex justify-start items-center">
@@ -46,8 +48,8 @@ export function PastPlannedTrips(props:DataStye)
                 </div>
             </div>
         </div>
-    </button>
-    :<button className="w-full">
+    </div>
+    :<div className="w-full">
         <div className="bg-slate-100 p-[2rem] flex rounded-md mt-[2rem] w-full">
             <div className="h-[30rem] w-[22rem] animate-pulse bg-slate-400 rounded-md "></div>
             <div className="ml-[2rem]">
@@ -72,7 +74,7 @@ export function PastPlannedTrips(props:DataStye)
                 </div>
             </div>
         </div>
-    </button>
+    </div>
     }
     </>
 }

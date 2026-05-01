@@ -87,4 +87,56 @@ PlanRouter.get("/Existing/Show/All" , Middleware , async function(req:any , res:
         return;
     }
 });
+PlanRouter.post("/Delete/Plan" , Middleware , async function(req:any,res:any)
+{
+    const PlanUniqueId = req.body.PlanUniqueId;
+    
+    try{
+        await PlanModel.deleteOne({
+            UniqueId : PlanUniqueId
+        });
+        res.status(SuccessStatusCodes.Success).json({
+            msg : "Plan Deleted Successfully !"
+        });
+        return;
+    }
+    catch(e)
+    {
+        res.status(ServerErrors.InternalServerError).json({
+            msg : "Internal Server Error Encountered !"
+        });
+        return;
+    }
+});
+PlanRouter.get("/View/Plan" , Middleware , async function(req:any ,res:any)
+{
+    const PlanUniqueId = req.body.PlanUniqueId;
+
+    try{
+        const result = await PlanModel.findOne({
+            UniqueId : PlanUniqueId
+        });
+        if(result)
+        {
+            res.status(SuccessStatusCodes.Success).json({
+                msg : result
+            });
+            return;
+        }
+        else
+        {
+            res.status(ServerErrors.InternalServerError).json({
+                msg : "Internal Server Error !"
+            });
+            return ;
+        }
+    }
+    catch(e)
+    {
+        res.status(ServerErrors.InternalServerError).json({
+            msg : "Internal Server Error Encountered !"
+        });
+        return;
+    }
+})
 export default PlanRouter;
