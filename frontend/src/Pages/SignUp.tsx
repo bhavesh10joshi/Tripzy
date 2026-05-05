@@ -1,130 +1,207 @@
-import aeroplane from "../Images/aeroplane.png"
-import { useRef, useState } from "react";
+import aeroplane from "../Images/aeroplane.png";
+import { useRef, useState, useEffect } from "react";
 import { Backend_Url } from "../BackendUrl/BackendUrl";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Validations } from "../Validations/ZodValidations";
 
 export function SignUp() {
-    const [ErrorState , SetErrorState] = useState(false);
-    const [LoadingState , SetLoadingState] = useState(false);
-    const [ErrorDetail , SetErrorDetail] = useState("");
+    const [ErrorState, SetErrorState] = useState(false);
+    const [LoadingState, SetLoadingState] = useState(false);
+    const [ErrorDetail, SetErrorDetail] = useState("Network Error");
+    const [ConfirmPasswordSame, SetConfirmPassword] = useState(false);
+    const [Password, SetPassword] = useState("");
+    const [ConfirmPassword, SetconfirmPassword] = useState("");
+    const [SuccessState, SetSuccessState] = useState(false);
+
+    const PasswordRef = useRef<HTMLInputElement>(null);
+    const ConfirmPasswordRef = useRef<HTMLInputElement>(null);
+    const EmailRef = useRef<HTMLInputElement>(null);
+    const Nameref = useRef<HTMLInputElement>(null);
     const Navigation = useNavigate();
-    const EmailRef:any = useRef(null);
-    const PasswordRef:any = useRef(null);
-    const ConfirmPasswordRef:any = useRef(null); 
-    async function BackendCall()
-    {
-        SetLoadingState(true);
-        const payload:any = {
-            email : EmailRef.current.value , 
-            password : PasswordRef.current.value
-        }
-        try{
-            const result = await axios.post(`${Backend_Url}` , payload);
-            if(result)
-            {
-                SetLoadingState(false);
+
+    useEffect(() => {
+        if (SuccessState) {
+            const timeout = setTimeout(() => {
+                SetSuccessState(false);
                 Navigation("/Tripzy/User/Login");
-            } 
-            else
-            {
-                SetErrorState(true);
-                // Zod validation has to be also initialized 
-                // SetErrorDetail(result);
-                setTimeout(function()
-                {
-                    Navigation("/");  
-                },2000);
-                return;
-            }
+            }, 3000);
+            return () => clearTimeout(timeout);
         }
-        catch(e)
-        {
+    }, [SuccessState, Navigation]);
+
+    useEffect(() => {
+        if (Password === ConfirmPassword && Password !== "") {
+            SetConfirmPassword(true);
+        } else {
+            SetConfirmPassword(false);
+        }
+    }, [Password, ConfirmPassword]);
+
+    useEffect(() => {
+        if (ErrorState) {
+            const timer = setTimeout(() => {
+                SetErrorState(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [ErrorState]);
+
+    async function Validate() {
+        const CurrentPara = {
+            email: EmailRef.current?.value,
+            Password: PasswordRef.current?.value
+        };
+        const Check: any = Validations.safeParse(CurrentPara);
+        if (Check.success) {
+            BackendCall();
+        } else {
+            const msg = Check.error.issues[0]?.message || "Validation Error";
+            console.log(msg);
+            SetErrorDetail(msg);
             SetErrorState(true);
-            setTimeout(function()
-            {
-                Navigation("/");
-            },2000);
-            return;
         }
     }
-    
+
+    async function BackendCall() {
+        SetLoadingState(true);
+        const payload = {
+            email: EmailRef.current?.value,
+            Password: PasswordRef.current?.value , 
+            name : Nameref.current?.value
+        };
+        try {
+            const result = await axios.post(`${Backend_Url}/Tripzy/Api/User/SignUp`, payload);
+            if (result) {
+                SetLoadingState(false);
+                SetSuccessState(true);
+            } else {
+                SetErrorDetail("Network Error: Could not connect to server");
+                SetErrorState(true);
+                SetLoadingState(false);
+            }
+        } catch (e) {
+            SetErrorDetail("Network Error: Could not connect to server");
+            SetErrorState(true);
+            SetLoadingState(false);
+        }
+    }
+
     return (
         <>
             <img 
                 src={aeroplane} 
-                alt="bgimage" 
-                className="absolute inset-0 w-full h-screen object-cover z-0" 
+                alt="Aeroplane background" 
+                className="fixed inset-0 w-full h-screen object-cover z-0" 
             />
 
-            <div className="absolute inset-0 bg-black/20 z-10"></div>
+            <div className="fixed inset-0 bg-black/20 z-10"></div>
 
-            <div className="relative z-20 flex flex-col items-center justify-center w-full h-screen px-4">
-                {
-                !ErrorState
-                ?<div>
-                <div className="bg-white h-[5rem] w-[25rem] flex flex-col justify-center items-center rounded-lg shadow-2xl">
-                    <div className="text-[1.5rem] text-blue-300 font-bold tracking-tight">
-                        TripzyAI
-                    </div>
-                    <div className="flex justify-center items-center text-slate-600 text-[0.8rem] font-bold">
-                        Your Intelligent Concierge Awaits
+            {ErrorState && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all">
+                    <div className="bg-white p-8 rounded-xl shadow-2xl border-l-8 border-red-500 max-w-md w-full mx-4 transform animate-in fade-in zoom-in duration-300">
+                        <div className="flex items-center gap-4">
+                            <div className="bg-red-100 p-3 rounded-full">
+                                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Something went wrong</h3>
+                                <p className="text-gray-600 font-mono text-sm">{typeof ErrorDetail === 'string' ? ErrorDetail : "Check your inputs"}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="bg-white h-[32rem] w-[25rem] flex flex-col justify-center items-center rounded-lg shadow-2xl mt-[2rem] pt-[2rem] pb-[2rem] pl-[2rem] pr-[2rem]">
-                    <div className="text-black text-[1.3rem] flex justify-start items-center w-full font-bold">
-                        Create an Account 
+            )}
+
+            {SuccessState && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all">
+                    <div className="bg-white p-8 rounded-xl shadow-2xl border-l-8 border-green-500 max-w-md w-full mx-4 transform animate-in fade-in zoom-in duration-300">
+                        <div className="flex items-center gap-4">
+                            <div className="bg-green-100 p-3 rounded-full">
+                                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Success!</h3>
+                                <p className="text-gray-600 font-mono text-sm">Account created successfully. Redirecting...</p>
+                            </div>
+                        </div>
                     </div>
-                    <div className=" w-full flex justify-start items-center font-mono text-slate-800 text-[0.8rem]">
-                        Join the Community of Million Explorers 
-                    </div>
-                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[2rem] w-full flex justify-start items-center">
-                        Email Address
-                    </div>
-                    <div className="w-full flex justify-start items-center mt-[0.5rem]">
-                        <input type="email" aria-label="name" className="rounded-md w-full h-[2rem] border border-slate-700 pl-[1rem] pr-[1rem] font-mono text-blue-300" ref={EmailRef}/>
-                    </div>
-                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[1rem] w-full flex justify-start items-center">
-                        Password
-                    </div>
-                    <div className="w-full flex justify-start items-center mt-[0.5rem]">
-                        <input type="password" aria-label="name" className="rounded-md w-full h-[2rem] border border-slate-700 pl-[1rem] pr-[1rem] font-mono text-blue-300" ref={PasswordRef}/>
-                    </div>
-                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[1rem] w-full flex justify-start items-center">
-                        Confirm Password
-                    </div>
-                    <div className="w-full flex justify-start items-center mt-[0.5rem]">
-                        <input type="password" aria-label="name" className="rounded-md w-full h-[2rem] border border-slate-700 pl-[1rem] pr-[1rem] font-mono text-blue-300" ref={ConfirmPasswordRef}/>
-                    </div>
-                    <div className="mt-[1rem] w-full h-full">
-                        <button className={`bg-blue-300 text-white w-full h-[3rem] rounded-md font-bold mt-[1rem] hover:animate-[bounce_1.5s_ease-in-out_infinite]`} onClick={() => BackendCall()}>
-                            {
-                                !LoadingState
-                                ?"Submit"
-                                : 
-                                    <div className="w-full h-full flex justify-center items-center">
-                                        <svg aria-hidden="true" className="w-8 h-8 text-neutral-tertiary animate-spin fill-brand" viewBox="0 0 100 101" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                                        </svg>
-                                    </div>
-                            }
-                        </button>
-                    </div>
+                </div>
+            )}
+
+            <div className="relative z-20 flex flex-col items-center justify-center w-full min-h-screen px-4 py-10">
+                <div className="bg-white h-[5rem] w-full max-w-[25rem] flex flex-col justify-center items-center rounded-lg shadow-2xl">
+                    <div className="text-[1.5rem] text-blue-300 font-bold tracking-tight">TripzyAI</div>
+                    <div className="flex justify-center items-center text-slate-600 text-[0.8rem] font-bold">Your Intelligent Concierge Awaits</div>
+                </div>
+
+                <div className="bg-white w-full max-w-[25rem] flex flex-col justify-center items-center rounded-lg shadow-2xl mt-[2rem] p-8">
+                    <div className="text-black text-[1.3rem] flex justify-start items-center w-full font-bold">Create an Account</div>
+                    <div className="w-full flex justify-start items-center font-mono text-slate-800 text-[0.8rem]">Join the Community of Million Explorers</div>
                     
-                    <div className="flex justify-center items-center">
-                        <div className="text-slate-600 text-[0.95rem] font-mono font-bold">
-                            Already have Account ? 
-                        </div>
-                        <div>
-                            <button className="ml-[1rem] text-[0.95rem] font-mono text-blue-300 hover:text-black font-bold" onClick={function(){Navigation("/Tripzy/User/Login");}}>SignIn</button>
-                        </div>
+                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[2rem] w-full text-left">Name</div>
+                    <input 
+                        type="name" 
+                        aria-label="name"
+                        placeholder="John Doe"
+                        className="rounded-md w-full h-[2.5rem] border border-slate-300 mt-2 px-4 font-mono text-blue-400 focus:outline-none focus:border-blue-300" 
+                        ref={Nameref}
+                    />
+
+                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[1rem] w-full text-left">Email Address</div>
+                    <input 
+                        type="email" 
+                        aria-label="Email Address"
+                        placeholder="email@example.com"
+                        className="rounded-md w-full h-[2.5rem] border border-slate-300 mt-2 px-4 font-mono text-blue-400 focus:outline-none focus:border-blue-300" 
+                        ref={EmailRef}
+                    />
+                    
+                    <div className="text-slate-800 text-[0.9rem] font-mono mt-[1rem] w-full text-left">Password</div>
+                    <input 
+                        type="password" 
+                        aria-label="Password"
+                        placeholder="••••••••"
+                        className="rounded-md w-full h-[2.5rem] border border-slate-300 mt-2 px-4 font-mono text-blue-400 focus:outline-none focus:border-blue-300" 
+                        ref={PasswordRef} 
+                        onChange={(e) => SetPassword(e.target.value)}
+                    />
+                    
+                    <div className="font-mono text-[0.9rem] mt-[1rem] w-full flex justify-between items-center">
+                        <span className="text-slate-800">Confirm Password</span>
+                        {!ConfirmPasswordSame && Password !== "" && <span className="text-red-500 font-bold text-[0.7rem]">Not matching!</span>}
                     </div>
-                </div></div>
-                :<div className="bg-white h-[10rem] w-[30rem] flex flex-col justify-center items-center rounded-lg shadow-2xl font-bold">
-                    {ErrorDetail}
-                </div>    
-            }
+                    <input 
+                        type="password" 
+                        aria-label="Confirm Password"
+                        placeholder="••••••••"
+                        className="rounded-md w-full h-[2.5rem] border border-slate-300 mt-2 px-4 font-mono text-blue-400 focus:outline-none focus:border-blue-300" 
+                        ref={ConfirmPasswordRef} 
+                        onChange={(e) => SetconfirmPassword(e.target.value)}
+                    />
+
+                    <button 
+                        disabled={LoadingState}
+                        className="bg-blue-300 text-white w-full h-[3rem] rounded-md font-bold mt-8 hover:bg-blue-400 transition-colors flex justify-center items-center disabled:opacity-50" 
+                        onClick={Validate}
+                    >
+                        {!LoadingState ? "Submit" : (
+                            <svg className="w-6 h-6 animate-spin text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        )}
+                    </button>
+                    
+                    <div className="flex justify-center items-center mt-6">
+                        <span className="text-slate-600 text-[0.9rem] font-mono">Already have Account?</span>
+                        <button className="ml-2 text-[0.9rem] font-mono text-blue-400 hover:text-blue-600 font-bold" onClick={() => Navigation("/Tripzy/User/Login")}>SignIn</button>
+                    </div>
+                </div>
             </div>
         </>
     );

@@ -24,7 +24,7 @@ export function PastPlannedTrips(props:DataStye)
             <div className="ml-[2rem]">
                 <div className="w-full flex justify-end items-center ">
                     <div className="bg-white rounded-md w-[4rem] h-[3rem] flex justify-center items-center">
-                       <button aria-label="name" onClick={}>
+                       <button aria-label="name">
                             <Bin/>
                         </button>
                     </div>
