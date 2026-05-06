@@ -19,7 +19,7 @@ export function LogIn() {
         if (WelcomeState) {
             const timeout = setTimeout(() => {
                 SetWelcomeState(false);
-                Navigation("/Tripzy/Dashboard");
+                Navigation("/Tripzy/User/Dashboard");
             }, 3000);
             return () => clearTimeout(timeout);
         }
@@ -60,6 +60,7 @@ export function LogIn() {
             const result = await axios.post(`${Backend_Url}/Tripzy/Api/User/Login`, payload);
             if (result.data.token) {
                 localStorage.setItem("token", result.data.token);
+                console.log(result.data.token);
                 SetLoadingState(false);
                 SetWelcomeState(true);
             } else {

@@ -3,7 +3,6 @@ export const groupEventsByDay = (events: any[]) => {
 
   events.forEach((event) => {
     const match = event.Time.match(/Day (\d+)/);
-
     if (!match) return;
 
     const day = match[1];

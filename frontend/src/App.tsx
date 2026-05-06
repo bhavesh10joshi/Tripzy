@@ -12,7 +12,7 @@ function App() {
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<LogIn/>}/>
-      <Route path="/Tripzy/User/Dashbaord" element={<Dashbaord/>}/>
+      <Route path="/Tripzy/User/Dashboard" element={<Dashbaord/>}/>
       <Route path="/Tripzy/User/Login" element={<LogIn/>}/>
       <Route path="/Tripzy/User/SignUp" element={<SignUp/>}/>
       <Route path="/Tripzy/User/MyTrips/View/All" element={<MyTrips/>}/>

@@ -5,6 +5,7 @@ import { Footer } from "../Components/Footer";
 
 export function Dashbaord()
 {
+    
     return<>
         <div className="w-full h-full ">
             <Navbar/>

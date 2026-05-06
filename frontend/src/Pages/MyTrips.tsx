@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 export function MyTrips()
 {
     const Navigation = useNavigate();
-    const [MyTripsData , SetMyTripsData] = useState({});
+    const [MyTripsData , SetMyTripsData] = useState([]);
     const [LoadingState , SetLoadingState] = useState(false);
     const [PlanUniueId , SetPlanUniqueId] = useState("");
     // useEffect(function()
@@ -38,7 +38,7 @@ export function MyTrips()
         try
         {
             SetLoadingState(true);
-            const result = await axios.get(`${Backend_Url}` , config);
+            const result = await axios.get(`${Backend_Url}/Tripzy/Api/TravelPlan/Existing/Show/All` , config);
             if(result)
             {
                 SetMyTripsData(result.data);

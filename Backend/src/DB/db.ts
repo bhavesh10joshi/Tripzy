@@ -7,7 +7,8 @@ const HotelSchema = new Schema({
   LocationOfHotel: { type: String, required: true },
   PricePerNight: { type: Number, required: true },
   HotelStars: { type: Number, required: true },
-  EstimatedBudget: { type: Number, required: true }
+  EstimatedBudget: { type: Number, required: true },
+  HotelImage: { type: String, required: true } 
 });
 
 const EventSchema = new Schema({
@@ -31,11 +32,12 @@ const user = new Schema({
 
 const plan = new Schema({
   userId: { type: ObjectId, required: true }, 
+  PlaceImage : { type: String, required: true }, 
   planName: { type: String, required: true },
   planDate: { type: String, required: true },
   numberOfPeople: { type: Number, required: true },
   hotelList: [HotelSchema],
-  events: [DayEventSchema], // ✅ updated
+  events: [DayEventSchema],
   UniqueId: { type: String, required: true }
 });
 

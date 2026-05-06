@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const UserObject = z.object({
-    email : z.string().includes("@") ,
-    Password : z.string().min(10).regex(/[0-9]/)
+  email: z.string().includes("@"),
+  Password: z.string().min(10).regex(/[0-9]/)
 });
 
 export const HotelZod = z.object({
@@ -10,7 +10,8 @@ export const HotelZod = z.object({
   LocationOfHotel: z.string(),
   PricePerNight: z.number(),
   HotelStars: z.number(),
-  EstimatedBudget: z.number()
+  EstimatedBudget: z.number(),
+  HotelImage: z.string()
 });
 
 export const EventZod = z.object({
@@ -29,6 +30,7 @@ export const DayEventZod = z.object({
 export const PlanZod = z.object({
   planName: z.string(),
   planDate: z.string(),
+  PlaceImage: z.string(),
   numberOfPeople: z.number(),
   hotelList: z.array(HotelZod),
   events: z.array(DayEventZod)

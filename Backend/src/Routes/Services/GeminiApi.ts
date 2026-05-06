@@ -11,23 +11,22 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateItinerary = async (input: any) => {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash"
+    model: "gemini-2.5-flash-lite"
   });
 
   const prompt = `
 Generate a COMPLETE travel itinerary in STRICT JSON.
 
-IMPORTANT RULES:
-- Return ONLY JSON
-- No markdown
-- No explanation
-- No trailing commas
-- Use exact format below
+IMAGE RULES:
+For "PlaceImage", use: https://image.dummyjson.com/1200x600/2c3e50/ffffff?text=[Encoded+Destination]
+For "HotelImage", use: https://image.dummyjson.com/400x300/34495e/ffffff?text=[Encoded+Hotel+Name]
+Spaces in text must be replaced with +.
 
 FORMAT:
 {
   "planName": "string",
   "planDate": "string",
+  "PlaceImage": "string",
   "numberOfPeople": number,
   "hotelList": [
     {
@@ -35,7 +34,8 @@ FORMAT:
       "LocationOfHotel": "string",
       "PricePerNight": number,
       "HotelStars": number,
-      "EstimatedBudget": number
+      "EstimatedBudget": number,
+      "HotelImage": "string"
     }
   ],
   "events": [
@@ -64,13 +64,11 @@ Number of Days: ${input.numberOfDays}
     if (!text) throw new Error("Empty Gemini response");
 
     const cleaned = text.replace(/```json|```/g, "").trim();
-
     const parsed = JSON.parse(cleaned);
 
     parsed.events = groupEventsByDay(parsed.events);
 
     return PlanZod.parse(parsed);
-
   } catch (error: any) {
     console.error("Gemini Error:", error);
     throw error;
