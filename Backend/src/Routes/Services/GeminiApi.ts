@@ -26,6 +26,8 @@ FORMAT:
 {
   "planName": "string",
   "planDate": "string",
+  "PlaceName": "string",
+  "PlanDescription": "string",
   "PlaceImage": "string",
   "numberOfPeople": number,
   "hotelList": [

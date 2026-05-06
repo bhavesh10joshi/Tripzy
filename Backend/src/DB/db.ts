@@ -32,6 +32,8 @@ const user = new Schema({
 
 const plan = new Schema({
   userId: { type: ObjectId, required: true }, 
+  PlaceName : {type : String , required : true} ,
+  PlanDescription : {type : String , required:true},
   PlaceImage : { type: String, required: true }, 
   planName: { type: String, required: true },
   planDate: { type: String, required: true },

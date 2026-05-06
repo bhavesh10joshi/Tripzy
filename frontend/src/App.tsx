@@ -18,7 +18,7 @@ function App() {
       <Route path="/Tripzy/User/MyTrips/View/All" element={<MyTrips/>}/>
       <Route path="/Tripzy/User/Plan/NewTrip" element={<PlanNewTrip/>}/>
       <Route path="/Tripzy/User/Login" element={<LogIn/>}/>
-      <Route path="/Tripzy/User/View/NewPlan" element={<DonePlanning/>}/>
+      <Route path="/Tripzy/User/View/Plan" element={<DonePlanning/>}/>
     </Routes>
   </BrowserRouter>
   </>

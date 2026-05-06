@@ -1,7 +1,7 @@
 import type { ReactElement } from "react"
 
 interface ButtonStyles {
-    size: "primary" | "secondry" | "tertiary",
+    size: "primary" | "secondry" | "tertiary" | "middle",
     text: string,
     FrontIcon?: ReactElement,
     BackIcon?: ReactElement,
@@ -19,6 +19,7 @@ const ColorAndShadowStyles = {
 const SizeStyling = {
     "primary": "w-[6rem] h-[2rem]",
     "secondry": "w-[15rem] h-[3.5rem]",
+    "middle" : "w-[9rem] h-[2.5rem]",
     "tertiary": ""
 }
 
