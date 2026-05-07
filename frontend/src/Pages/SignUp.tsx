@@ -1,6 +1,6 @@
 import aeroplane from "../Images/aeroplane.png";
 import { useRef, useState, useEffect } from "react";
-import { Backend_Url } from "../BackendUrl/BackendUrl";
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Validations } from "../Validations/ZodValidations";
@@ -71,7 +71,7 @@ export function SignUp() {
             name : Nameref.current?.value
         };
         try {
-            const result = await axios.post(`${Backend_Url}/Tripzy/Api/User/SignUp`, payload);
+            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/User/SignUp`, payload);
             if (result) {
                 SetLoadingState(false);
                 SetSuccessState(true);

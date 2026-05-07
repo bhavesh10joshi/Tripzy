@@ -4,7 +4,7 @@ import { PastPlannedTrips } from "../Components/PlannedTrip"
 import tower from "../Images/tower.jpg"
 import { AddNew } from "../Ui/Icons/AddNew"
 import axios from "axios"
-import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 import { useEffect, useState, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -24,7 +24,7 @@ export function MyTrips() {
             }
         };
         try {
-            const result = await axios.get(`${Backend_Url}/Tripzy/Api/TravelPlan/Existing/Show/All`, config);
+            const result = await axios.get(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Existing/Show/All`, config);
             if (result && result.data) {
                 SetMyTripsData(result.data.Data);
             } else {

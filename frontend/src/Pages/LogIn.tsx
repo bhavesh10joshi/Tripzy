@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import aeroplane from "../Images/aeroplane.png";
 import axios from "axios";
-import { Backend_Url } from "../BackendUrl/BackendUrl";
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl";
 import { useNavigate } from "react-router-dom";
 import { Validations } from "../Validations/ZodValidations";
 
@@ -57,7 +57,7 @@ export function LogIn() {
         };
 
         try {
-            const result = await axios.post(`${Backend_Url}/Tripzy/Api/User/Login`, payload);
+            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/User/Login`, payload);
             if (result.data.token) {
                 localStorage.setItem("token", result.data.token);
                 console.log(result.data.token);

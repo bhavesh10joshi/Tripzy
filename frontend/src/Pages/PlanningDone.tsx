@@ -7,7 +7,7 @@ import { PlanDay } from "../Components/Days"
 import { Footer } from "../Components/Footer"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 import { useLocation } from "react-router-dom"
 
 export function DonePlanning() {
@@ -50,7 +50,7 @@ export function DonePlanning() {
             }
         };
         try {
-            const result = await axios.post(`${Backend_Url}/Tripzy/Api/TravelPlan/Show/Existing`, payload, config);
+            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Show/Existing`, payload, config);
             if (result.data.Data) {
                 SetPlanData([result.data.Data]);
                 SetLoadingState(false);

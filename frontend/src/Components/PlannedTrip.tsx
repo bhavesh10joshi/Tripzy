@@ -1,7 +1,7 @@
 import { Button } from "../Ui/Buttons/Button"
 import { Calender } from "../Ui/Icons/Calender"
 import { Bin } from "../Ui/Icons/Bin"
-import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 import axios from "axios"
 
 interface DataStye {
@@ -30,7 +30,7 @@ export function PastPlannedTrips(props: DataStye) {
         const payload = { PlanUniqueId: props.UniqueId };
         
         try {
-            await axios.post(`${Backend_Url}/Tripzy/Api/TravelPlan/Delete/Plan`, payload, config);
+            await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Delete/Plan`, payload, config);
             props.RefreshData?.();
         } catch (e) {
             props.SetErrorStateFunction?.(true);

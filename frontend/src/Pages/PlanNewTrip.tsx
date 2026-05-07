@@ -6,7 +6,7 @@ import { RichDollar } from "../Ui/Icons/RichDollar"
 import { Balance } from "../Ui/Icons/Balance"
 import { Magic } from "../Ui/Icons/Magic"
 import { useNavigate } from "react-router-dom"
-import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 import { useEffect, useState, useRef } from "react"
 import axios from "axios"
 import { Planning } from "./Planning"
@@ -74,7 +74,7 @@ export function PlanNewTrip() {
             }
         };
         try {
-            const result: any = await axios.post(`${Backend_Url}/Tripzy/Api/TravelPlan/New`, payload, config);
+            const result: any = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/New`, payload, config);
             if (result) {
                 console.log(result.data.UniqueId);
                 localStorage.setItem("UniqueId", result.data.UniqueId);

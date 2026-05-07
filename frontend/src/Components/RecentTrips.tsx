@@ -4,7 +4,7 @@ import baali from "../Images/baali.jpg"
 import jodhpur from "../Images/jodhpur.jpg"
 import { Calender } from "../Ui/Icons/Calender"
 import { useNavigate } from "react-router-dom"
-import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { AddNew } from "../Ui/Icons/AddNew"
@@ -45,7 +45,7 @@ export function RecentTrips() {
             }
         };
         try {
-            const result: any = await axios.get(`${Backend_Url}/Tripzy/Api/TravelPlan/Existing/Show/All`, config);
+            const result: any = await axios.get(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Existing/Show/All`, config);
             if (result && result.data) {
                 SetTripsData(result.data.Data);
                 SetLoadingState(false);

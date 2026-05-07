@@ -1,1 +1,1 @@
-export const Backend_Url = "http://localhost:8000"; 
+export const VITE_BACKEND_URL = "https://tripzy-yeqm.onrender.com";
