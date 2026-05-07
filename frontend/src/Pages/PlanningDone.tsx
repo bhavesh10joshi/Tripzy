@@ -80,16 +80,16 @@ export function DonePlanning() {
 
         {!LoadingState && PlanData.length > 0
             ? PlanData.map((trips: any, index: number) => (
-                <div key={index} className="pl-[2rem] pr-[2rem] pt-[2rem] animate-in fade-in duration-700">
-                    <div className="flex justify-center items-center">
-                        <div className="flex justify-start items-center flex-col w-2/4 bg-slate-100 p-[2rem] rounded-md hover:shadow-lg transition-shadow">
+                <div key={index} className="px-4 md:px-[2rem] pt-4 md:pt-[2rem] animate-in fade-in duration-700">
+                    <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch">
+                        <div className="flex justify-start items-center flex-col w-full md:w-1/2 bg-slate-100 p-6 md:p-[2rem] rounded-md hover:shadow-lg transition-shadow">
                             <div className="text-blue-400 font-mono font-bold flex justify-start items-center w-full text-[0.9rem] tracking-widest">
                                 CURATED ITINERARY
                             </div>
-                            <div className="font-extrabold text-[4rem] text-slate-900 w-full mt-[-1rem]">
+                            <div className="font-extrabold text-[3rem] md:text-[4rem] text-slate-900 w-full mt-[-0.5rem] md:mt-[-1rem]">
                                 {trips.planName}
                             </div>
-                            <div className="flex justify-start items-center gap-10 w-full pl-[1rem]">
+                            <div className="flex justify-start items-center gap-4 md:gap-10 w-full md:pl-[1rem] mt-2 md:mt-0">
                                 <div className="flex justify-center items-center">
                                     <Date />
                                     <div className="text-[0.8rem] font-bold text-slate-500 ml-[0.5rem]">{trips.planDate}</div>
@@ -102,8 +102,8 @@ export function DonePlanning() {
                         </div>
 
                         {/* Top Price Related info bar */}
-                        <div className="p-[2rem] w-2/4 flex justify-end items-center mt-[-3rem]">
-                            <div className="bg-slate-900 rounded-2xl w-[30rem] h-[13rem] p-[1.5rem] shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                        <div className="p-4 md:p-[2rem] w-full md:w-1/2 flex justify-center md:justify-end items-center mt-4 md:mt-[-3rem]">
+                            <div className="bg-slate-900 rounded-2xl w-full max-w-[30rem] h-auto p-[1.5rem] shadow-2xl transform hover:scale-105 transition-transform duration-500">
                                 <div className="flex justify-between items-center mb-2">
                                     <div className="text-[0.8rem] font-bold text-slate-400 uppercase tracking-wider">Estimated Budget</div>
                                     <div className={`font-mono font-bold px-3 py-1 rounded-md text-[0.7rem] border ${
@@ -114,7 +114,7 @@ export function DonePlanning() {
                                         {trips.BudgetCategory || "STANDARD"}
                                     </div>
                                 </div>
-                                <div className="text-[2.8rem] font-black text-white flex justify-center items-center font-sans tracking-tighter">
+                                <div className="text-[2rem] md:text-[2.8rem] font-black text-white flex justify-center items-center font-sans tracking-tighter">
                                     ₹{trips.EstimatedTotalCostINR?.toLocaleString()}
                                 </div>
                                 <div className="flex justify-center items-center w-full mt-[1rem]">
@@ -131,11 +131,11 @@ export function DonePlanning() {
                         </div>
                     </div>
 
-                    <div className="mt-[3rem] flex justify-center items-center">
-                        <div className="w-2/4 text-slate-900 text-[1.8rem] font-bold">
+                    <div className="mt-[3rem] flex flex-col md:flex-row justify-center items-center">
+                        <div className="w-full md:w-1/2 text-slate-900 text-[1.5rem] md:text-[1.8rem] font-bold text-center md:text-left">
                             Recommended Stays
                         </div>
-                        <div className="w-2/4 flex justify-end items-end gap-4 pr-[2rem] text-slate-400 font-bold italic text-sm">
+                        <div className="w-full md:w-1/2 flex justify-center md:justify-end items-end gap-4 md:pr-[2rem] text-slate-400 font-bold italic text-sm mt-2 md:mt-0">
                             Scroll to explore →
                         </div>
                     </div>

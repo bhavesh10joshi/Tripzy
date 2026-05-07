@@ -15,6 +15,7 @@ export const generateItinerary = async (input: any) => {
     generationConfig: {
       maxOutputTokens: 8192,
       temperature: 0.7,
+      responseMimeType: "application/json",
     }
   });
 
@@ -24,7 +25,7 @@ Generate a COMPLETE travel itinerary in STRICT JSON format.
 CRITICAL RULES:
 1. "GoogleMapsLocationLink" MUST be a direct search URL: https://www.google.com/maps/search/?api=1&query=[Hotel+Name+Plus+Destination]
 2. You MUST generate exactly ${input.numberOfDays} days.
-3. Every single day MUST have at least 3 distinct events.
+3. Every single day MUST have at least 3 distinct events in the "events" array. DO NOT OMIT ANY DAYS OR EVENTS.
 4. "Time" field MUST start with the prefix "Day X - " (e.g., "Day 1 - Morning"). This is mandatory for the parser.
 
 REQUIRED SCHEMA:

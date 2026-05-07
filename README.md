@@ -1,253 +1,113 @@
-# 🌍 Tripzy – AI Travel Planner (In Development)
+# TripzyAI - The Intelligent Concierge
 
-Tripzy is an AI-powered travel planning web application that generates personalized trip itineraries based on user preferences such as destination, budget, number of people, and trip duration. It leverages modern full-stack technologies along with AI to provide a seamless and intelligent travel planning experience.
+## About This App
+TripzyAI is a cutting-edge MERN stack application designed to serve as your personal, intelligent travel concierge. Powered by the Gemini 1.5 Flash model, it effortlessly generates comprehensive, multi-day travel itineraries. Just provide your destination, budget, and group size, and TripzyAI will craft an optimal, engaging plan tailored specifically to you.
 
----
+## Real-Life Use Case
+Planning a vacation often involves juggling multiple tabs, mapping out locations, and painstakingly managing time and budgets. TripzyAI solves this by providing a one-click itinerary complete with optimal daily events, Google Maps integration, and budget estimations. Whether you're planning a quick weekend getaway or a two-week international tour, TripzyAI minimizes planning fatigue and maximizes the joy of travel.
 
-## 🚀 Features
+## Tech Stack
+- **Frontend:** React, TypeScript, Tailwind CSS, Vite
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** MongoDB
+- **AI Integration:** Google Generative AI (Gemini 1.5 Flash)
+- **Deployment:** Vercel (Frontend), Render (Backend)
 
-### 🔐 Authentication System
-
-* User Signup & Login
-* Secure password hashing using bcrypt
-* JWT-based authentication
-
-### 🧠 AI-Powered Trip Generation
-
-* Uses Gemini API to generate personalized itineraries
-* Based on:
-
-  * Destination
-  * Number of people
-  * Budget (Cheap / Moderate / Luxury)
-  * Number of days
-
-### 🏨 Hotel Recommendations
-
-* Hotel name
-* Images
-* Address
-* Google Maps link
-* Price per night
-* Ratings (stars)
-
-### 📍 Places to Visit (Day-wise Planning)
-
-* Day-wise itinerary (Day 1, Day 2, etc.)
-* Time slots (e.g., 10:00 AM – 12:00 PM)
-* Place descriptions (synopsis)
-* Estimated visit duration
-* Cost per person (including free places)
-
-### 💾 Save Trips
-
-* All generated itineraries are saved in MongoDB
-* Users can access them in **"My Planned Trips"**
-
-### 📧 Email Integration
-
-* Users can send itinerary to their email
-* Useful for offline access
-
-### 🏠 Home Dashboard
-
-* Create new trip option
-* View previous trips
-* Clean and modern UI
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-* React.js
-* Tailwind CSS
-* Zustand (state management)
-
-### Backend
-
-* Node.js
-* Express.js
-* TypeScript
-
-### Database
-
-* MongoDB
-* Mongoose
-
-### Authentication & Validation
-
-* JWT (JSON Web Tokens)
-* bcrypt (password hashing)
-* Zod (schema validation)
-
-### AI Integration
-
-* Gemini API (Google AI)
-
-### Other Services
-
-* Email Service (Nodemailer or similar)
-
----
-
-## Application Images :-
-
-<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/aa9275ca-e575-4d7d-bb51-9d4172612be8" />
-<img width="1919" height="926" alt="Screenshot 2026-04-14 111230" src="https://github.com/user-attachments/assets/ca441969-6d30-4bbf-b7fb-29685e1222fa" />
-<img width="1919" height="924" alt="image" src="https://github.com/user-attachments/assets/813abb11-8ebf-44dc-a695-801f5683d954" />
-<img width="1919" height="925" alt="Screenshot 2026-04-14 115856" src="https://github.com/user-attachments/assets/63ad726d-4522-4623-bfbb-23a78680a183" />
-<img width="1919" height="931" alt="Screenshot 2026-04-14 193007" src="https://github.com/user-attachments/assets/e9930164-66c3-4c03-832e-28289b5ef9c8" />
-<img width="1919" height="926" alt="Screenshot 2026-04-14 193016" src="https://github.com/user-attachments/assets/31caefd8-411d-4512-a21d-64b8dd1fff04" />
-<img width="1919" height="927" alt="Screenshot 2026-04-14 193027" src="https://github.com/user-attachments/assets/a36b3572-5a7e-4920-b136-50740fdb3cb7" />
-
-
-
-## 🏗️ System Architecture
-
-User → Frontend (React) → Backend (Node/Express) → Gemini API
-↓
-MongoDB Database
-
----
-
-## 📂 Project Structure
-
-```
-/client
-  /components
-  /pages
-  /store (zustand)
-  /services (API calls)
-
-/server
-  /controllers
-  /routes
-  /models
-  /middlewares
-  /utils (AI + email logic)
-
-.env
+## Project Structure
+```text
+TripzyAI/
+├── Backend/                 # Express backend server
+│   ├── src/
+│   │   ├── Helper/          # Utility functions
+│   │   ├── Routes/          # API Route Definitions
+│   │   │   ├── Services/    # AI / External services
+│   │   │   ├── TravelPlan/  # Plan management endpoints
+│   │   │   └── User/        # User authentication endpoints
+│   │   └── Validations/     # Zod schema validations
+│   └── package.json
+├── frontend/                # Vite React application
+│   ├── public/
+│   ├── src/
+│   │   ├── Components/      # Reusable UI elements
+│   │   ├── Pages/           # Application views
+│   │   └── index.css        # Global styles (Tailwind)
+│   └── package.json
+└── README.md
 ```
 
----
+## How to Run Locally
 
-## ⚙️ Installation & Setup
+### Prerequisites
+- Node.js installed (v18+ recommended)
+- MongoDB Cluster (Local or Atlas URI)
+- Google Gemini API Key
 
-### 1. Clone the repository
+### Backend Setup
+1. Navigate to the `Backend` directory: 
+   ```bash
+   cd Backend
+   ```
+2. Install dependencies: 
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the root of the `Backend` directory and populate it with the following keys:
+   ```env
+   PORT=3000
+   MongoDB_URL=your_mongodb_connection_string_here
+   GEMINI_API_KEY=your_gemini_api_key_here
+   JWT_PASS=your_custom_jwt_secret_here
+   ```
+4. Start the development server: 
+   ```bash
+   npm run dev
+   ```
 
-```
-git clone https://github.com/your-username/tripzy.git
-cd tripzy
-```
+### Frontend Setup
+1. Navigate to the `frontend` directory: 
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies: 
+   ```bash
+   npm install
+   ```
+3. Ensure the backend URL is pointing to your local environment. In `frontend/src/BackendUrl/BackendUrl.ts` (or equivalent config), verify:
+   ```typescript
+   export const Backend_Url = "http://localhost:3000";
+   ```
+4. Start the frontend development server: 
+   ```bash
+   npm run dev
+   ```
 
-### 2. Install dependencies
+## System Diagram & Data Flow
+1. **User Input:** The user submits preferences (destination, days, budget, people) via the React frontend.
+2. **API Request:** Frontend calls the Express Backend (`/Tripzy/Api/TravelPlan/Generate`).
+3. **AI Generation:** Backend constructs a prompt and hits the Google Gemini API.
+4. **Validation:** The AI response is parsed, formatted into days/events, and validated using Zod.
+5. **Database Storage:** The valid itinerary is saved to MongoDB.
+6. **Response:** The generated plan is returned to the frontend and rendered elegantly.
 
-Frontend:
+## Database Schema / E-R Diagram Structure
+- **User Collection:** `_id`, `name`, `email`, `password`, `trips` (References to TravelPlan).
+- **TravelPlan Collection:** `_id`, `planName`, `planDate`, `PlaceName`, `PlanDescription`, `numberOfPeople`, `EstimatedTotalCostINR`, `BudgetCategory`.
+  - Nested `hotelList` Array: Details for recommended hotels.
+  - Nested `events` Array: Specific activities sorted by day and time.
 
-```
-cd client
-npm install
-```
+## Deployment Details
+- **Frontend:** Hosted on **Vercel** for optimal global edge delivery. The `vercel.json` ensures smooth SPA routing.
+- **Backend:** Hosted on **Render**. 
+- **BetterStack Integration:** A `/api/health` endpoint is configured in the backend and integrated with BetterStack. This creates periodic health checks, ensuring the Render instance does not spin down due to inactivity.
 
-Backend:
+## Screenshots
 
-```
-cd server
-npm install
-```
 
-### 3. Setup Environment Variables
-
-Create a `.env` file in server:
-
-```
-PORT=5000
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret_key
-GEMINI_API_KEY=your_api_key
-EMAIL_USER=your_email
-EMAIL_PASS=your_password
-```
-
----
-
-### 4. Run the project
-
-Backend:
-
-```
-npm run dev
-```
-
-Frontend:
-
-```
-npm run dev
-```
-
----
-
-## 📸 Screens (You can add later)
-
-* Login Page
-* Home Dashboard
-* Trip Form
-* Generated Itinerary
-* My Trips Section
-
----
-
-## 🎯 Use Cases
-
-* Students planning trips
-* Budget travelers
-* Family trip planning
-* Quick itinerary generation
-
----
-
-## 📈 Future Enhancements
-
-* Booking integration (hotels/flights)
-* Map visualization (live routes)
-* Voice-based input
-* Mobile app version
-* AI chatbot for trip customization
-
----
-
-## 💼 Resume Description
-
-Developed an AI-powered travel planner using MERN stack and Gemini API that generates personalized itineraries including hotel recommendations, day-wise schedules, and cost estimation. Implemented secure authentication, state management, and scalable backend architecture.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
-
----
-
-## 📄 License
-
-This project is for educational purposes.
-
----
-
-## ⭐ Acknowledgements
-
-* Google Gemini API
-* MongoDB
-* React & Node.js ecosystem
-
----
-
-## 👨‍💻 Author
-
-Bhavesh Joshi
-
----
-
-⭐ If you like this project, consider giving it a star!
+- **Landing Page:** 
+  <!-- ![Landing Page](frontend/public/landing.png) -->
+- **User Dashboard:**
+  <!-- ![Dashboard](frontend/public/dashboard.png) -->
+- **Trip Generation Interface:**
+  <!-- ![Trip Generator](frontend/public/generator.png) -->
+- **Curated Itinerary / Results:**
+  <!-- ![Generated Itinerary](frontend/public/itinerary.png) -->

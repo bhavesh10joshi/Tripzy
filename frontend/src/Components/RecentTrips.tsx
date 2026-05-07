@@ -83,20 +83,20 @@ export function RecentTrips() {
 
             {!LoadingState && !ErrorState ? (
                 TripsData.length >= 1 ? (
-                    <div className="mt-[8rem] pl-[7rem] pr-[7rem] w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <div className="flex w-full mb-8">
-                            <div>
+                    <div className="mt-[8rem] px-4 md:px-[7rem] w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        <div className="flex flex-col md:flex-row w-full mb-8">
+                            <div className="mb-4 md:mb-0">
                                 <div className="text-black font-semibold text-[1.7rem]">Recent Trips</div>
                                 <div className="text-slate-700">Continue Planning your upcoming trips</div>
                             </div>
-                            <div className="flex-1 flex justify-end items-center">
+                            <div className="flex-1 flex justify-start md:justify-end items-center">
                                 <Button text="View all Activity" color="white" textColor="blue" size="secondry" BackIcon={<Arrow />}  OnClick={() => Navigation("/Tripzy/User/MyTrips/View/All")}/>
                             </div>
                         </div>
 
-                        <div className="flex gap-8 pb-[2rem]">
+                        <div className="flex flex-col md:flex-row gap-8 pb-[2rem]">
                             {FirstTrip && (
-                                <button className={`${buttonStyle} text-left flex-shrink-0`} onClick={() => SetBackend(FirstTrip.UniqueId)}>
+                                <button className={`${buttonStyle} text-left flex-shrink-0 w-full md:w-auto md:max-w-md`} onClick={() => SetBackend(FirstTrip.UniqueId)}>
                                     <div className="shadow-lg shadow-slate-900/20 rounded-2xl overflow-hidden bg-white">
                                         <div className="relative overflow-hidden">
                                             <img src={baali} alt="trip" className="rounded-t-lg transition-transform duration-500 group-hover:scale-110 w-full" />
@@ -117,9 +117,9 @@ export function RecentTrips() {
 
                             <div className="flex-1 flex flex-col gap-6">
                                 {OtherTrips.slice(0, 2).map((trips: any) => (
-                                    <button key={trips.UniqueId} className={`${buttonStyle} flex items-center bg-white p-4 rounded-2xl shadow-md`} onClick={() => SetBackend(trips.UniqueId)}>
-                                        <img src={jodhpur} alt="trip" className="w-[6rem] h-[6rem] rounded-xl object-cover" />
-                                        <div className="ml-6">
+                                    <button key={trips.UniqueId} className={`${buttonStyle} flex flex-col md:flex-row items-start md:items-center bg-white p-4 rounded-2xl shadow-md w-full`} onClick={() => SetBackend(trips.UniqueId)}>
+                                        <img src={jodhpur} alt="trip" className="w-full md:w-[6rem] h-[10rem] md:h-[6rem] rounded-xl object-cover" />
+                                        <div className="ml-0 md:ml-6 mt-4 md:mt-0 text-left">
                                             <div className="text-sm font-mono text-blue-500 font-bold mb-1">{trips.planDate}</div>
                                             <div className="text-lg font-bold text-slate-700">{trips.planName}</div>
                                         </div>
@@ -136,7 +136,7 @@ export function RecentTrips() {
                         </div>
                     </div>
                 ) : (
-                    <div className="mt-[8rem] pl-[7rem] pr-[7rem] w-full animate-in zoom-in-95 duration-500">
+                    <div className="mt-[8rem] px-4 md:px-[7rem] w-full animate-in zoom-in-95 duration-500">
                         <div className="mb-8">
                             <div className="text-black font-semibold text-[1.7rem]">No Recent Trips</div>
                             <div className="text-slate-700">Start your journey by planning your first trip</div>

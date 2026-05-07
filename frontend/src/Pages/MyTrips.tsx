@@ -74,9 +74,9 @@ export function MyTrips() {
 
             <Navbar />
             
-            <div className="pb-[5rem] pt-[8rem] px-[5rem] max-w-[1400px] mx-auto min-h-screen">
+            <div className="pb-[5rem] pt-[8rem] px-4 md:px-[5rem] max-w-[1400px] mx-auto min-h-screen">
                 <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                    <h1 className="font-black text-[3.5rem] text-slate-900 leading-tight">My Planned Trips</h1>
+                    <h1 className="font-black text-[3rem] md:text-[3.5rem] text-slate-900 leading-tight">My Planned Trips</h1>
                     <p className="text-slate-500 text-lg max-w-2xl mt-4 font-medium">Manage itineraries, adjust dates, or explore AI-powered suggestions.</p>
                 </div>
 

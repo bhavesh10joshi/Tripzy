@@ -2,17 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide scrollbar for Chrome, Safari */
-.custom-scrollbar::-webkit-scrollbar {
+/* Hide scrollbar globally */
+*::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge */
-.custom-scrollbar {
-  -ms-overflow-style: none;
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-/* Hide scrollbar for Firefox */
-.custom-scrollbar {
+body {
+  -ms-overflow-style: none;
   scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }

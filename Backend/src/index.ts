@@ -21,6 +21,9 @@ if (!MongoDB_URL) {
 app.use("/Tripzy/Api/User" , UserRouter)
 app.use("/Tripzy/Api/TravelPlan" , PlanRouter);
 
+app.get("/api/health", (req, res) => {
+    res.status(200).send("OK");
+});
 
 main();
 

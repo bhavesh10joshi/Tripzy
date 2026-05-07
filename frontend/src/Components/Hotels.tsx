@@ -15,7 +15,7 @@ interface HotelLayout {
 export function Hotels(props: HotelLayout) {
     return <>
         {props.Type == "Loaded"
-            ? <div className="w-[23rem] min-w-[23rem] flex-shrink-0 h-auto bg-slate-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-slate-100 overflow-hidden">
+            ? <div className="w-full md:w-[23rem] md:min-w-[23rem] flex-shrink-0 h-auto bg-slate-100 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-slate-100 overflow-hidden">
                 <div className="relative">
                     <img src={props.image} alt="Hotel" className="w-full h-[17rem] object-cover" />
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-1 shadow-md">

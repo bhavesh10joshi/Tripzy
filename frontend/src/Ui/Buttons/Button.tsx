@@ -17,9 +17,9 @@ const ColorAndShadowStyles = {
 }
 
 const SizeStyling = {
-    "primary": "w-[6rem] h-[2rem]",
-    "secondry": "w-[15rem] h-[3.5rem]",
-    "middle" : "w-[9rem] h-[2.5rem]",
+    "primary": "w-full md:w-[6rem] h-[2rem] px-2",
+    "secondry": "w-full md:w-[15rem] h-[3.5rem] px-4",
+    "middle" : "w-full md:w-[9rem] h-[2.5rem] px-2",
     "tertiary": ""
 }
 

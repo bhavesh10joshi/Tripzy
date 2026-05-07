@@ -43,12 +43,12 @@ export function PastPlannedTrips(props: DataStye) {
         <>
             {props.Type == "Loaded" ? (
                 <div className="w-full group/card relative">
-                    <div className="bg-white p-[2rem] flex rounded-[2rem] mt-[2rem] w-full shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100">
-                        <div className="relative overflow-hidden rounded-2xl h-[15rem] w-[20rem] flex-shrink-0">
+                    <div className="bg-white p-6 md:p-[2rem] flex flex-col md:flex-row rounded-[2rem] mt-[2rem] w-full shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100">
+                        <div className="relative overflow-hidden rounded-2xl h-[15rem] w-full md:w-[20rem] flex-shrink-0">
                             <img src={props.ImageOfthePlan} alt={props.NameofItienary} className="h-full w-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
                         </div>
                         
-                        <div className="ml-[2rem] flex-1">
+                        <div className="mt-6 md:mt-0 md:ml-[2rem] flex-1">
                             <div className="w-full flex justify-end items-center">
                                 <button 
                                     aria-label="delete" 
