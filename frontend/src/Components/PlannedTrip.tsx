@@ -3,7 +3,6 @@ import { Calender } from "../Ui/Icons/Calender"
 import { Bin } from "../Ui/Icons/Bin"
 import { Backend_Url } from "../BackendUrl/BackendUrl"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
 
 interface DataStye {
     NameofItienary?: string,

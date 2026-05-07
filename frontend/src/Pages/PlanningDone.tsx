@@ -8,14 +8,13 @@ import { Footer } from "../Components/Footer"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Backend_Url } from "../BackendUrl/BackendUrl"
-import { useNavigate , useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 export function DonePlanning() {
     const [ErrorState, SetErrorState] = useState(false);
-    const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
+    const [ErrorDetail] = useState("Network Error : Please Try again later");
     const [LoadingState, SetLoadingState] = useState(false);
     const [PlanData, SetPlanData]: any = useState([]);
-    const Navigation = useNavigate();
     const Location = useLocation();
 
     useEffect(function()

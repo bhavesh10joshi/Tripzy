@@ -13,7 +13,7 @@ export function MyTrips() {
     const [MyTripsData, SetMyTripsData] = useState([]);
     const [LoadingState, SetLoadingState] = useState(false);
     const [ErrorState, SetErrorState] = useState(false);
-    const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please try again later !");
+    const [ErrorDetail] = useState("Network Error : Please try again later !");
 
     const BackendCall = useCallback(async () => {
         const token = localStorage.getItem("token");
