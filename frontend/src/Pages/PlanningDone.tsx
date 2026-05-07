@@ -12,7 +12,7 @@ import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 
 export function DonePlanning() {
     const [ErrorState, SetErrorState] = useState(false);
-    const [ErrorDetail] = useState("Network Error : Please Try again later");
+    const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
     const [LoadingState, SetLoadingState] = useState(false);
     const [PlanData, SetPlanData]: any = useState([]);
 
@@ -51,10 +51,12 @@ export function DonePlanning() {
                 SetPlanData([result.data.Data]);
                 SetLoadingState(false);
             } else {
+                SetErrorDetail("Backend returned empty Data. Itinerary may have been deleted or not found.");
                 SetErrorState(true);
                 SetLoadingState(false);
             }
-        } catch (e) {
+        } catch (e: any) {
+            SetErrorDetail(e.response?.data?.msg || e.message || "Network Error: Could not connect to the backend.");
             SetErrorState(true);
             SetLoadingState(false);
         }
@@ -73,8 +75,8 @@ export function DonePlanning() {
             </div>
         )}
 
-        {!LoadingState && PlanData.length > 0
-            ? PlanData.map((trips: any, index: number) => (
+        {!LoadingState && PlanData.length > 0 ? (
+            PlanData.map((trips: any, index: number) => (
                 <div key={index} className="px-4 md:px-[2rem] pt-4 md:pt-[2rem] animate-in fade-in duration-700">
                     <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch">
                         <div className="flex justify-start items-center flex-col w-full md:w-1/2 bg-slate-100 p-6 md:p-[2rem] rounded-md hover:shadow-lg transition-shadow">
@@ -164,11 +166,17 @@ export function DonePlanning() {
                     </div>
                 </div>
             ))
-            : <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
+        ) : LoadingState ? (
+            <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-400"></div>
                 <div className="mt-4 font-bold text-slate-500">Loading your masterpiece...</div>
             </div>
-        }
+        ) : (
+            <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
+                <div className="text-4xl mb-4">🏜️</div>
+                <div className="mt-4 font-bold text-slate-500">Could not find itinerary data.</div>
+            </div>
+        )}
         <Footer />
     </>
 }
