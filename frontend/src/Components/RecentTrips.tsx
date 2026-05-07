@@ -28,7 +28,7 @@ export function RecentTrips() {
 
     function SetBackend(UniqueId: string) {
         localStorage.setItem("UniqueId", UniqueId);
-        Navigation("/Tripzy/User/View/NewPlan");
+        Navigation("/Tripzy/User/View/Plan");
     }
 
     useEffect(function () {

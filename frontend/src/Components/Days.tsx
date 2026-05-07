@@ -1,56 +1,50 @@
 import { TimeCard } from "./TimeCard"
 
-interface DayStyle{
-    DayNumber ?: number , 
-    NameOfPlanDay ?: string , 
-    Date ?: string , 
-    TimeStampsData ?: [Timestamps] , 
-    Type : "Loaded" | "Loading" 
+interface DayStyle {
+    DayNumber?: number,
+    NameOfPlanDay?: string,
+    Date?: string,
+    TimeStampsData?: Timestamps[],
+    Type: "Loaded" | "Loading"
 }
 
 interface Timestamps {
-    Time ?: string , 
-    PlanName ?: string , 
-    ConsumptionTotalTime ?: string , 
-    MoneyType ?: string  ,
-    DescriptionName ?: string , 
+    Time?: string,
+    NameOfEvent?: string,
+    TotalTimeConsumption?: string,
+    PriceType?: string,
+    EventDescription?: string,
 }
 
-export function PlanDay(props : DayStyle)
-{
-    return<>
-    {
-        props.Type == "Loaded"
-        ?<div>
-        <div className="flex justify-start items-center">
-            <div className="bg-blue-300 rounded-full p-[1rem]">
-                <div className="font-bold text-[0.7rem] text-white flex justify-center items-center">DAY</div>
-                <div className="text-white font-bold text-[2rem] flex justify-center items-center ">0{props.DayNumber}</div>
-            </div>
-            <div className="flex justify-start items-center flex-col ml-[2rem]">
-                <div className="font-semibold text-[2rem]">{props.NameOfPlanDay}</div>
-                <div className="w-full flex justify-start items-center">{props.Date}</div>
-            </div>
-        </div>
-        <div className="ml-[4rem] mb-[4rem]">
-            <TimeCard PlanName="Arrive at Narita Airport" Time="9:00 AM" TotalTimeConsumption="1.5" MoneyType="Free" PlanDescription="Meet your private chauffeur at the arrivals hall. Your concierge will handle your luggage and coordinate the express transfer to the hotel via the scenic TokyoBay route. " Type="Loaded"/>
-        </div>
-        </div>
-        :<div>
-        <div className="flex justify-start items-center">
-            <div className="bg-blue-300 rounded-full p-[1rem] animate-pulse w-[5rem] h-[7rem]">
-            </div>
-            <div className="flex justify-start items-center flex-col ml-[2rem]">
-                <div className="font-semibold text-[2rem] bg-slate-400 animate-pulse rounded-md w-[17rem] h-[5rem]"></div>
-                <div className="w-full">
-                    <div className="flex justify-start items-center bg-slate-400 animate-pulse rounded-md w-[12rem] h-[2rem] mt-[1rem]"></div>
+export function PlanDay(props: DayStyle) {
+    return <>
+        {props.Type == "Loaded"
+            ? <div className="animate-in slide-in-from-left duration-700">
+                <div className="flex justify-start items-center">
+                    <div className="bg-blue-500 rounded-3xl p-[1.2rem] shadow-lg shadow-blue-100 flex flex-col items-center justify-center">
+                        <div className="font-black text-[0.6rem] text-blue-100 uppercase">DAY</div>
+                        <div className="text-white font-black text-[2.2rem] leading-none">{props.DayNumber && props.DayNumber < 10 ? `0${props.DayNumber}` : props.DayNumber}</div>
+                    </div>
+                    <div className="flex flex-col ml-6">
+                        <div className="font-black text-3xl text-slate-900 uppercase tracking-tighter">{props.NameOfPlanDay}</div>
+                        <div className="text-slate-400 font-bold text-sm tracking-widest uppercase">{props.Date}</div>
+                    </div>
+                </div>
+                <div className="ml-10 md:ml-16 border-l-2 border-slate-100 pl-10 py-8">
+                    {props.TimeStampsData?.map((day: any, idx: number) => (
+                        <TimeCard 
+                            key={idx}
+                            PlanName={day.NameOfEvent} 
+                            Time={day.Time} 
+                            TotalTimeConsumption={day.TotalTimeConsumption} 
+                            MoneyType={day.PriceType} 
+                            PlanDescription={day.EventDescription} 
+                            Type="Loaded" 
+                        />
+                    ))}
                 </div>
             </div>
-        </div>
-        <div className="ml-[4rem] mb-[4rem]">
-            <TimeCard Type="Loading"/>
-        </div>
-        </div>
-    }
+            : <div className="h-40 w-full bg-slate-50 animate-pulse rounded-3xl mb-10" />
+        }
     </>
 }

@@ -7,19 +7,21 @@ export function Navbar()
     const Navigation = useNavigate();
     return<>
         <div className="w-full h-full flex gap-8 pl-[3rem] pt-[2rem] pb-[2rem] pr-[3rem]">
-            <div className="flex justify-center items-center text-blue-500 font-bold text-[1.7rem] ">
-                Tripzy AI
-            </div>
+            <button onClick={() => Navigation("/Tripzy/User/Dashboard")} className="hover:cursor-pointer">
+                <div className="flex justify-center items-center text-blue-500 font-bold text-[1.7rem] ">
+                    Tripzy AI
+                </div>
+            </button>
             <div className="flex justify-center items-center text-[0.9rem] gap-4 pl-[2rem] font-semibold text-slate-500">
-                <button className="hover:text-blue-300" onClick={()=>function(){Navigation("/Tripzy/User/Plan/NewTrip")}}>New Trips</button>
-                <button className="hover:text-blue-300" onClick={()=>function(){Navigation("/Tripzy/User/MyTrips/View/All");}}>My Trips</button>
+                <button className="hover:text-blue-300" onClick={() => Navigation("/Tripzy/User/Plan/NewTrip")}>New Trips</button>
+                <button className="hover:text-blue-300" onClick={() => Navigation("/Tripzy/User/MyTrips/View/All")}>My Trips</button>
             </div>
             {/* here comes the avatar/username for the user */}
             <div className="flex-1 justify-center items-end">
                 <div className="flex justify-end items-center">
                     <Button size="primary" text="LogOut" textColor="white" color="blue" OnClick={()=>function(){
-                        localStorage.removeItem("token");
-                        Navigation("/Tripzy/User/Login");
+                        localStorage.clear();
+                        Navigation("/");
                     }}/>
                     <div className="flex justify-center items-center ml-[2rem] rounded-full border border-slate-600 p-[0.5rem]">
                         <img src={avatar} alt="avatarlogo" className="flex justify-center items-center w-[2rem] h-[2rem]" />

@@ -2,32 +2,51 @@ import { Plane } from "../Ui/Icons/Plane"
 import aeroplane from "../Images/aeroplane.png"
 import { GeminiAi } from "./GeminiAi"
 
-export function Planning()
-{
-    return<>
-        <img 
-            src={aeroplane} 
-            alt="bgimage" 
-            className="absolute inset-0 w-full h-screen object-cover z-0" 
-        />
-        <div className="absolute inset-0 bg-black/20 z-10"></div>
+export function Planning() {
+    return <>
+        <div className="fixed inset-0 overflow-hidden">
+            <img 
+                src={aeroplane} 
+                alt="bgimage" 
+                className="absolute inset-0 w-full h-full object-cover scale-110 animate-pulse duration-[4000ms]" 
+            />
+            <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"></div>
+        </div>
 
-        <div className="relative z-20 flex flex-col items-center justify-center w-full h-screen px-4">
-            
-            <div className="bg-white h-[37rem] w-[40rem] flex flex-col justify-center items-center rounded-lg shadow-2xl p-[2rem]">
-                <div className="p-[1rem] border border-slate-200 rounded-full flex justify-center items-center bg-slate-200 animate-ping">
-                    <Plane/>
+        <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 animate-in fade-in duration-1000">
+            <div className="bg-white/95 backdrop-blur-md w-full max-w-2xl py-16 px-10 rounded-[3.5rem] shadow-2xl text-center border border-white">
+                <div className="relative mx-auto w-24 h-24 mb-10">
+                    <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-20"></div>
+                    <div className="relative bg-blue-500 w-full h-full rounded-[2rem] flex items-center justify-center shadow-xl shadow-blue-200 transform rotate-12">
+                        <Plane />
+                    </div>
                 </div>
-                <div className="text-slate-800 text-[2.2rem] mt-[6rem] font-bold text-center">
-                    <span className="italic text-blue-300">Tripzy</span> is crafting Your perfect gateway ...
+
+                <h2 className="text-slate-900 text-4xl md:text-5xl font-black leading-tight mb-6">
+                    <span className="text-blue-500 italic">Tripzy</span> is crafting<br />Your perfect gateway
+                </h2>
+                
+                <p className="text-slate-500 font-bold text-lg mb-12 italic leading-relaxed max-w-lg mx-auto">
+                    "Analyzing thousands of routes, hidden gems, and local secrets to curate a journey just for you."
+                </p>
+                
+                <div className="relative w-64 h-3 bg-slate-100 rounded-full mx-auto overflow-hidden mb-8">
+                    <div className="absolute top-0 left-0 h-full bg-blue-500 w-1/2 animate-[loading_2s_infinite_ease-in-out] rounded-full"></div>
                 </div>
-                <div className="text-slate-500 font-bold text-center mt-[1rem] text-[0.9rem] ml-[2rem] mr-[2rem] italic">Analyzing thousands of routes , hidden gems , and local secrets to curate a journey just for you.</div>
-                <div className="bg-blue-300 h-[0.5rem] w-[15rem] flex justify-center items-center rounded-full mt-[2rem]"></div>
-                <div className="flex justify-center items-center gap-2 mt-[1rem]">
-                    <div className="flex justify-center items-center italic text-blue-300 font-bold text-[0.8rem] ">AI Engine Active</div>
-                    <GeminiAi/>
+                
+                <div className="flex justify-center items-center gap-4 bg-slate-50 w-fit mx-auto px-6 py-3 rounded-2xl border border-slate-100">
+                    <span className="text-blue-500 font-black text-xs uppercase tracking-widest animate-pulse">AI Engine Active</span>
+                    <GeminiAi />
                 </div>
             </div>
         </div>
+
+        <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes loading {
+                0% { left: -100%; width: 50%; }
+                50% { width: 70%; }
+                100% { left: 100%; width: 50%; }
+            }
+        `}} />
     </>
 }

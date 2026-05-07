@@ -1,8 +1,6 @@
 import { Navbar } from "../Components/Navabar"
 import { Date } from "../Ui/Icons/Date"
 import { Users } from "../Ui/Icons/Users"
-import { Left } from "../Ui/Icons/Left"
-import { Right } from "../Ui/Icons/Right"
 import Hotel1 from "../Images/Hotel1.jpg"
 import { Hotels } from "../Components/Hotels"
 import { PlanDay } from "../Components/Days"
@@ -10,219 +8,172 @@ import { Footer } from "../Components/Footer"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Backend_Url } from "../BackendUrl/BackendUrl"
+import { useNavigate , useLocation } from "react-router-dom"
 
-export function DonePlanning()
-{  
-    const [LoadingState , SetLoadingState] = useState(false);
-    const [PlanData , SetPlanData] = useState({});
-    useEffect(
-        function()
-        {
-            const TimeOut = setTimeout(function()
-            {
-                BackendCall();
-            },1000);
-            return clearTimeout(TimeOut);
-        }
-    )
-    async function BackendCall()
+export function DonePlanning() {
+    const [ErrorState, SetErrorState] = useState(false);
+    const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
+    const [LoadingState, SetLoadingState] = useState(false);
+    const [PlanData, SetPlanData]: any = useState([]);
+    const Navigation = useNavigate();
+    const Location = useLocation();
+
+    useEffect(function()
     {
+        localStorage.removeItem("UniqueId");
+    },[Location]);
+
+    useEffect(function () {
+        if (ErrorState) {
+            const timeout = setTimeout(function () {
+                SetErrorState(false);
+            }, 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [ErrorState]);
+
+    useEffect(function () {
+        SetLoadingState(true);
+        const TimeOut = setTimeout(function () {
+            BackendCall();
+        }, 2000);
+        return () => clearTimeout(TimeOut);
+    }, []);
+
+    async function BackendCall() {
         const token = localStorage.getItem("token");
         const PlanUniqueId = localStorage.getItem("UniqueId");
+        const payload = { PlanUniqueId: PlanUniqueId };
         const config = {
             headers: {
-                'Authorization': token ,
+                'Authorization': token,
                 'Content-Type': 'application/json'
-            },
-            params : {
-                PlanUniqueId : PlanUniqueId
             }
         };
-        try{
-            SetLoadingState(true);
-            const result = await axios.get(`${Backend_Url}` , config);
-            if(result)
-            {
-                SetPlanData(result.data);
-                SetLoadingState(false)
-                return;
-            }
-            else
-            {
+        try {
+            const result = await axios.post(`${Backend_Url}/Tripzy/Api/TravelPlan/Show/Existing`, payload, config);
+            if (result.data.Data) {
+                SetPlanData([result.data.Data]);
                 SetLoadingState(false);
-                return;
+            } else {
+                SetErrorState(true);
+                SetLoadingState(false);
             }
-        }
-        catch(e)
-        {
+        } catch (e) {
+            SetErrorState(true);
             SetLoadingState(false);
-            return;
         }
     }
-    return<>
-    <Navbar/>
-    {
-    !LoadingState 
-        ?<div className="pl-[2rem] pr-[2rem] pt-[2rem]">
-            <div className="flex justify-center items-center">
-                <div className="flex justify-start items-center flex-col w-2/4 bg-slate-100 p-[2rem] rounded-md">
-                    <div className="text-blue-300 font-mono font-bold flex justify-start items-center w-full text-[0.9rem]">
-                        CURATED ITINERARY
-                    </div>
-                    <div className="font-bold text-[4rem] w-full mt-[-1rem]">
-                        Tokyo & Kyoto
-                    </div>
-                    <div className="flex justify-start items-center gap-10 w-full pl-[1rem]">
-                        <div className="flex justify-center items-center">
-                            <div>
-                                <Date/>
-                            </div>
-                            <div className="text-[0.8rem] font-bold text-slate-600 flex justify-center items-center ml-[0.5rem]">
-                                Oct 14 - Oct 22 , 2024
-                            </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                            <div>
-                                <Users/>
-                            </div>
-                            <div className="text-[0.8rem] font-bold text-slate-600 flex justify-center items-center ml-[0.5rem]">
-                                2 Travelers
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="p-[2rem] w-2/4 flex justify-end items-center mt-[-3rem]">
-                    <div className="bg-slate-100 rounded-md w-[30rem] h-[10rem] p-[1rem]">
-                        <div className="flex justify-center items-center gap-5">
-                            <div className=" text-[0.9rem] font-bold text-slate-500">Estimated Budget</div>
-                            <div className="border-red-600 text-red-600 bg-red-100 border font-mono font-bold pl-[1rem] pr-[1rem] rounded-md text-[0.7rem]">
-                                LUXURY TRIP
-                            </div>
-                        </div>
-                        <div className="text-[2.6rem] font-bold flex justify-center items-center font-sans">
-                            $4850.00
-                        </div>
-                        <div className="flex justify-center items-center w-full mt-[1rem]">
-                            <div className="w-full h-[0.5rem] rounded-full bg-blue-300"></div>
-                            <div className="w-full h-[0.5rem] rounded-full bg-green-600 ml-[-0.5rem]"></div>
-                            <div className="w-full h-[0.5rem] rounded-full bg-red-600 ml-[-0.5rem]"></div>
-                        </div>
-                        <div className="flex justify-center items-center gap-20">
-                            <div className="font-semibold text-blue-300">
-                                Flights
-                            </div>
-                            <div className="font-semibold text-green-600">
-                                Stays
-                            </div>
-                            <div className="font-semibold text-red-600">
-                                Fun
-                            </div>
-                        </div>
-                    </div>
+
+    return <>
+        <Navbar />
+
+        {/* Error Overlay */}
+        {ErrorState && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-red-500 animate-bounce">
+                    <div className="font-bold text-xl text-slate-800">Error</div>
+                    <div className="text-slate-600 mt-2">{ErrorDetail}</div>
                 </div>
             </div>
-            <div className="mt-[3rem] flex justify-center items-center">
-                <div className="w-2/4 text-slate-800 text-[1.5rem] font-semibold">
-                    Recommended Stays
-                </div>
-                <div className="w-2/4 flex justify-end items-end gap-2 pr-[2rem]">
-                    <button aria-label="name" className=" bg-slate-200 p-[0.7rem] rounded-full flex justify-center items-center"><Left/></button>
-                    <button aria-label="name" className=" bg-slate-200 p-[0.7rem] rounded-full flex justify-center items-center"><Right/></button>
-                </div>
-            </div>
-            <div className="mt-[2rem] mb-[3rem] flex flex-row h-[500px] overflow-x-auto items-start gap-4 custom-scrollbar">
-                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5} Type="Loaded"/>
-                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5} Type="Loaded"/>
-                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5} Type="Loaded"/>
-                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5} Type="Loaded"/>
-                <Hotels image={Hotel1} price={123} Location={"Haldwani"} NameOfHotel={"Taj Hotel"} StarsOutOf5={3.5} Type="Loaded"/>
-            </div>
-            <div>
-                <PlanDay DayNumber={1} NameOfPlanDay="Arrival & Electric Evenings" Date="Monday , October 14" Type="Loaded"/> 
-            </div>
-        </div>
-        :<div className="pl-[2rem] pr-[2rem] pt-[2rem]">
-            <div className="flex justify-center items-center">
-                <div className="flex justify-start items-center flex-col w-2/4 bg-slate-100 p-[2rem] rounded-md">
-                    <div className="text-blue-300 font-mono font-bold flex justify-start items-center w-full text-[0.9rem]">
-                        CURATED ITINERARY
-                    </div>
-                    <div className="w-full mt-[2rem] mb-[2rem]">
-                        <div className="mt-[-1rem] animate-pulse bg-slate-500 w-[20rem] h-[7rem] rounded-md">
-                        </div>
-                    </div>
-                    <div className="flex justify-start items-center gap-10 w-full pl-[1rem]">
-                        <div className="flex justify-center items-center">
-                            <div>
-                                <Date/>
+        )}
+
+        {!LoadingState && PlanData.length > 0
+            ? PlanData.map((trips: any, index: number) => (
+                <div key={index} className="pl-[2rem] pr-[2rem] pt-[2rem] animate-in fade-in duration-700">
+                    <div className="flex justify-center items-center">
+                        <div className="flex justify-start items-center flex-col w-2/4 bg-slate-100 p-[2rem] rounded-md hover:shadow-lg transition-shadow">
+                            <div className="text-blue-400 font-mono font-bold flex justify-start items-center w-full text-[0.9rem] tracking-widest">
+                                CURATED ITINERARY
                             </div>
-                            <div className="animate-pulse bg-slate-500 w-[10rem] h-[2rem] rounded-md flex justify-center items-center ml-[0.5rem]">
+                            <div className="font-extrabold text-[4rem] text-slate-900 w-full mt-[-1rem]">
+                                {trips.planName}
+                            </div>
+                            <div className="flex justify-start items-center gap-10 w-full pl-[1rem]">
+                                <div className="flex justify-center items-center">
+                                    <Date />
+                                    <div className="text-[0.8rem] font-bold text-slate-500 ml-[0.5rem]">{trips.planDate}</div>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <Users />
+                                    <div className="text-[0.8rem] font-bold text-slate-500 ml-[0.5rem]">{trips.numberOfPeople} Travelers</div>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                            <div>
-                                <Users/>
-                            </div>
-                            <div className="animate-pulse bg-slate-500 w-[10rem] h-[2rem] rounded-md flex justify-center items-center ml-[0.5rem]">
+
+                        {/* Top Price Related info bar */}
+                        <div className="p-[2rem] w-2/4 flex justify-end items-center mt-[-3rem]">
+                            <div className="bg-slate-900 rounded-2xl w-[30rem] h-[13rem] p-[1.5rem] shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="text-[0.8rem] font-bold text-slate-400 uppercase tracking-wider">Estimated Budget</div>
+                                    <div className={`font-mono font-bold px-3 py-1 rounded-md text-[0.7rem] border ${
+                                        trips.BudgetCategory?.toLowerCase().includes("luxury") 
+                                        ? "border-red-600 text-red-500 bg-red-950/30" 
+                                        : "border-green-600 text-green-500 bg-green-950/30"
+                                    }`}>
+                                        {trips.BudgetCategory || "STANDARD"}
+                                    </div>
+                                </div>
+                                <div className="text-[2.8rem] font-black text-white flex justify-center items-center font-sans tracking-tighter">
+                                    ₹{trips.EstimatedTotalCostINR?.toLocaleString()}
+                                </div>
+                                <div className="flex justify-center items-center w-full mt-[1rem]">
+                                    <div className="w-full h-[0.4rem] rounded-full bg-blue-400"></div>
+                                    <div className="w-full h-[0.4rem] rounded-full bg-green-500 ml-[-0.2rem]"></div>
+                                    <div className="w-full h-[0.4rem] rounded-full bg-red-500 ml-[-0.2rem]"></div>
+                                </div>
+                                <div className="flex justify-between px-2 mt-1 text-[10px] font-bold uppercase tracking-tighter text-slate-500">
+                                    <span>Flights</span>
+                                    <span>Stays</span>
+                                    <span>Activity</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="p-[2rem] w-2/4 flex justify-end items-center mt-[-3rem]">
-                    <div className="bg-slate-100 rounded-md w-[30rem] h-[10rem] p-[1rem]">
-                        <div className="flex justify-center items-center gap-5">
-                            <div className=" text-[0.9rem] font-bold text-slate-500">Estimated Budget</div>
-                            <div className="animate-pulse bg-slate-500 w-[10rem] h-[2rem] border font-mono font-bold pl-[1rem] pr-[1rem] rounded-md text-[0.7rem]">
-                            </div>
+
+                    <div className="mt-[3rem] flex justify-center items-center">
+                        <div className="w-2/4 text-slate-900 text-[1.8rem] font-bold">
+                            Recommended Stays
                         </div>
-                        <div className="animate-pulse bg-slate-500 w-[10rem] h-[2rem] rounded-md flex justify-center items-center">
-                        </div>
-                        <div className="flex justify-center items-center w-full mt-[1rem]">
-                            <div className="w-full h-[0.5rem] rounded-full bg-blue-300"></div>
-                            <div className="w-full h-[0.5rem] rounded-full bg-green-600 ml-[-0.5rem]"></div>
-                            <div className="w-full h-[0.5rem] rounded-full bg-red-600 ml-[-0.5rem]"></div>
-                        </div>
-                        <div className="flex justify-center items-center gap-20">
-                            <div className="font-semibold text-blue-300">
-                                Flights
-                            </div>
-                            <div className="font-semibold text-green-600">
-                                Stays
-                            </div>
-                            <div className="font-semibold text-red-600">
-                                Fun
-                            </div>
+                        <div className="w-2/4 flex justify-end items-end gap-4 pr-[2rem] text-slate-400 font-bold italic text-sm">
+                            Scroll to explore →
                         </div>
                     </div>
+
+                    <div className="mt-[2rem] mb-[3rem] flex flex-row h-[500px] overflow-x-auto items-start gap-8 custom-scrollbar">
+                        {trips.hotelList?.map((hotels: any, i: number) => (
+                            <Hotels 
+                                key={i}
+                                image={Hotel1} 
+                                price={hotels.PricePerNight} 
+                                Location={hotels.LocationOfHotel} 
+                                NameOfHotel={hotels.NameOfHotel} 
+                                StarsOutOf5={hotels.HotelStars} 
+                                LinkforLocation={hotels.GoogleMapsLocationLink} 
+                                Type="Loaded" 
+                            />
+                        ))}
+                    </div>
+
+                    <div className="space-y-12 mb-10">
+                        {trips.events?.map((event: any, i: number) => (
+                            <PlanDay 
+                                key={i}
+                                DayNumber={event.Day} 
+                                NameOfPlanDay={event.Nameoftheday} 
+                                Date={event.DayDate} 
+                                Type="Loaded" 
+                                TimeStampsData={event.Events} 
+                            />
+                        ))}
+                    </div>
                 </div>
+            ))
+            : <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-400"></div>
+                <div className="mt-4 font-bold text-slate-500">Loading your masterpiece...</div>
             </div>
-            <div className="mt-[3rem] flex justify-center items-center">
-                <div className="w-2/4 text-slate-800 text-[1.5rem] font-semibold">
-                    Recommended Stays
-                </div>
-                <div className="w-2/4 flex justify-end items-end gap-2 pr-[2rem]">
-                    <button aria-label="name" className=" bg-slate-200 p-[0.7rem] rounded-full flex justify-center items-center"><Left/></button>
-                    <button aria-label="name" className=" bg-slate-200 p-[0.7rem] rounded-full flex justify-center items-center"><Right/></button>
-                </div>
-            </div>
-            <div className="mt-[2rem] mb-[3rem] flex flex-row h-[500px] overflow-x-auto items-start gap-4 custom-scrollbar">
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-                <Hotels Type="Loading"/>
-            </div>
-            <div>
-                <PlanDay Type="Loading"/> 
-                <PlanDay Type="Loading"/> 
-                <PlanDay Type="Loading"/> 
-                <PlanDay Type="Loading"/> 
-                <PlanDay Type="Loading"/> 
-            </div>
-        </div>
         }
-        <Footer/>
+        <Footer />
     </>
 }

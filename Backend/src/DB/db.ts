@@ -4,6 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const HotelSchema = new Schema({
   NameOfHotel: { type: String, required: true },
+  GoogleMapsLocationLink : {type : String , required:true},
   LocationOfHotel: { type: String, required: true },
   PricePerNight: { type: Number, required: true },
   HotelStars: { type: Number, required: true },
@@ -21,6 +22,8 @@ const EventSchema = new Schema({
 
 const DayEventSchema = new Schema({
   Day: { type: Number, required: true },
+  Nameoftheday: { type: String, required: true },
+  DayDate: { type: String, required: true }, 
   Events: [EventSchema]
 });
 
@@ -32,12 +35,14 @@ const user = new Schema({
 
 const plan = new Schema({
   userId: { type: ObjectId, required: true }, 
-  PlaceName : {type : String , required : true} ,
-  PlanDescription : {type : String , required:true},
-  PlaceImage : { type: String, required: true }, 
+  PlaceName: { type: String, required: true },
+  PlanDescription: { type: String, required: true },
+  PlaceImage: { type: String, required: true }, 
   planName: { type: String, required: true },
   planDate: { type: String, required: true },
   numberOfPeople: { type: Number, required: true },
+  BudgetCategory: { type: String, required: true },
+  EstimatedTotalCostINR: { type: Number, required: true },
   hotelList: [HotelSchema],
   events: [DayEventSchema],
   UniqueId: { type: String, required: true }

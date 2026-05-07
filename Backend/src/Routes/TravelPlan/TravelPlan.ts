@@ -43,7 +43,7 @@ PlanRouter.post("/New" , Middleware , async function(req:any , res:any)
         return;
     }
 });
-PlanRouter.get("/Show/Existing" , Middleware , async function(req:any , res:any)
+PlanRouter.post("/Show/Existing" , Middleware , async function(req:any , res:any)
 {
     const UserId = req.UserId;
     const PlanUniqueId = req.body.PlanUniqueId;

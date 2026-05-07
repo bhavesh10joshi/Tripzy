@@ -11,7 +11,8 @@ export const HotelZod = z.object({
   PricePerNight: z.number(),
   HotelStars: z.number(),
   EstimatedBudget: z.number(),
-  HotelImage: z.string()
+  HotelImage: z.string(),
+  GoogleMapsLocationLink: z.string(),
 });
 
 export const EventZod = z.object({
@@ -24,6 +25,8 @@ export const EventZod = z.object({
 
 export const DayEventZod = z.object({
   Day: z.number(),
+  Nameoftheday: z.string(),
+  DayDate: z.string(),
   Events: z.array(EventZod)
 });
 
@@ -32,6 +35,10 @@ export const PlanZod = z.object({
   planDate: z.string(),
   PlaceImage: z.string(),
   numberOfPeople: z.number(),
+  BudgetCategory: z.string(),
+  EstimatedTotalCostINR: z.number(),
   hotelList: z.array(HotelZod),
-  events: z.array(DayEventZod)
+  events: z.array(DayEventZod),
+  PlaceName: z.string(),        
+  PlanDescription: z.string(),
 });
