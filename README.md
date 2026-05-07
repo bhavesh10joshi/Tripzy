@@ -35,6 +35,11 @@ TripzyAI/
 └── README.md
 ```
 
+## System Diagram
+
+<img width="1512" height="2708" alt="diagram (1)" src="https://github.com/user-attachments/assets/841c7082-1225-471a-93d3-5390b2896953" />
+
+
 ## How to Run Locally
 
 ### Prerequisites
