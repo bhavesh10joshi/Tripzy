@@ -103,11 +103,34 @@ TripzyAI/
 ## Screenshots
 
 
-- **Landing Page:** 
-  <!-- ![Landing Page](frontend/public/landing.png) -->
+- **Landing Page:**
+
+<img width="1918" height="929" alt="Screenshot 2026-05-07 222846" src="https://github.com/user-attachments/assets/d6f51c3a-4dd0-41a7-84f5-44e97610398a" />
+
+<img width="1919" height="928" alt="Screenshot 2026-05-07 222925" src="https://github.com/user-attachments/assets/75aa944e-d4d3-4b20-ab67-14d8be0a2f1b" />
+
+
 - **User Dashboard:**
-  <!-- ![Dashboard](frontend/public/dashboard.png) -->
+
+<img width="1919" height="929" alt="Screenshot 2026-05-07 221404" src="https://github.com/user-attachments/assets/d8b1c5e4-e821-469d-87a1-0e33f0fc7fd2" />
+
+
+<img width="1919" height="929" alt="Screenshot 2026-05-07 221404" src="https://github.com/user-attachments/assets/0a74cdf9-af57-4138-aed8-b468185a67be" />
+
 - **Trip Generation Interface:**
-  <!-- ![Trip Generator](frontend/public/generator.png) -->
+
+<img width="1916" height="922" alt="Screenshot 2026-05-07 221851" src="https://github.com/user-attachments/assets/4af0b2c7-13ed-4c0b-8159-5e59bace25b2" />
+
+<img width="1919" height="923" alt="Screenshot 2026-05-07 221906" src="https://github.com/user-attachments/assets/476cd14e-f1b3-4ce4-9272-79f596745c44" />
+
+<img width="1919" height="928" alt="Screenshot 2026-05-07 222121" src="https://github.com/user-attachments/assets/49745420-0336-497a-a715-30f526ec35cf" />
+
+
 - **Curated Itinerary / Results:**
-  <!-- ![Generated Itinerary](frontend/public/itinerary.png) -->
+<img width="1915" height="924" alt="Screenshot 2026-05-07 221533" src="https://github.com/user-attachments/assets/91059b59-f7dd-4ca2-8d52-9ab7d412c6f9" />
+
+
+<img width="1915" height="924" alt="Screenshot 2026-05-07 221533" src="https://github.com/user-attachments/assets/6ebe12e6-c07a-47ce-97aa-50135b9486b7" />
+
+
+<img width="1915" height="924" alt="Screenshot 2026-05-07 221533" src="https://github.com/user-attachments/assets/c80d9393-a603-461d-ac70-1e22e5eeca46" />
