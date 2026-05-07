@@ -33,15 +33,7 @@ export function PlanNewTrip() {
         ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
 
-    useEffect(function () {
-        if (InProgress) {
-            const timeout = setTimeout(function () {
-                SetInProgressState(false);
-                Navigation("/Tripzy/User/View/Plan");
-            }, 2000);
-            return () => clearTimeout(timeout);
-        }
-    }, [InProgress, Navigation]);
+    // Intentionally removed premature 2-second timeout navigation. Navigation should only occur after API responds.
 
     useEffect(function () {
         if (ErrorState) {
@@ -78,6 +70,8 @@ export function PlanNewTrip() {
             if (result) {
                 console.log(result.data.UniqueId);
                 localStorage.setItem("UniqueId", result.data.UniqueId);
+                SetInProgressState(false);
+                Navigation("/Tripzy/User/View/Plan");
             } else {
                 SetErrorState(true);
                 SetInProgressState(false);

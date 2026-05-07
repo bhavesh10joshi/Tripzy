@@ -8,19 +8,15 @@ import { Footer } from "../Components/Footer"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
-import { useLocation } from "react-router-dom"
+
 
 export function DonePlanning() {
     const [ErrorState, SetErrorState] = useState(false);
     const [ErrorDetail] = useState("Network Error : Please Try again later");
     const [LoadingState, SetLoadingState] = useState(false);
     const [PlanData, SetPlanData]: any = useState([]);
-    const Location = useLocation();
 
-    useEffect(function()
-    {
-        localStorage.removeItem("UniqueId");
-    },[Location]);
+    // Intentionally removed premature localStorage cleanup to prevent the race condition where UniqueId was wiped before the BackendCall.
 
     useEffect(function () {
         if (ErrorState) {

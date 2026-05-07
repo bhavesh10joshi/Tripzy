@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const generateItinerary = async (input: any) => {
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     generationConfig: {
       maxOutputTokens: 8192,
       temperature: 0.7,
