@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UserObject = z.object({
   email: z.string().includes("@"),
-  Password: z.string().min(10).regex(/[0-9]/)
+  Password: z.string().min(2)
 });
 
 export const HotelZod = z.object({

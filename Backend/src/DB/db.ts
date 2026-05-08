@@ -28,7 +28,7 @@ const DayEventSchema = new Schema({
 });
 
 const user = new Schema({
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: false },
   nameofUser: { type: String, required: true },
   password: { type: String, required: true }
 });
