@@ -4,7 +4,7 @@ import avatar from "../Images/avatar.jpg"
 import { useNavigate } from "react-router-dom"
 export function Navbar()
 {
-    const Navigation = useNavigate();
+    // const Navigation = useNavigate();
     return<>
         <div className="w-full flex flex-col md:flex-row gap-4 md:gap-8 px-4 md:pl-[3rem] md:pr-[3rem] py-4 md:pt-[2rem] md:pb-[2rem]">
             <div className="flex justify-between items-center w-full md:w-auto">
