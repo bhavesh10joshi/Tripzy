@@ -7,6 +7,7 @@ import { DonePlanning } from "./Pages/PlanningDone";
 import { MyTrips } from "./Pages/MyTrips";
 import { BrowserRouter , Route , Routes} from "react-router-dom";
 import { Notifictions } from "./Pages/Notfifications";
+import { LandingPage } from "./Pages/LandingPage";
 
 function App() {
   return<>
@@ -22,7 +23,8 @@ function App() {
       <Route path="/Tripzy/User/View/Plan" element={<DonePlanning/>}/>
     </Routes>
   </BrowserRouter> */}
-  <Notifictions/>
+  {/* <Notifictions/> */}
+  <LandingPage/>
   </>
 }
 
