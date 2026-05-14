@@ -8,6 +8,7 @@ import { MyTrips } from "./Pages/MyTrips";
 import { BrowserRouter , Route , Routes} from "react-router-dom";
 import { Notifictions } from "./Pages/Notfifications";
 import { LandingPage } from "./Pages/LandingPage";
+import { Analytics } from "./Pages/Analytics";
 
 function App() {
   return<>
@@ -24,7 +25,8 @@ function App() {
     </Routes>
   </BrowserRouter> */}
   {/* <Notifictions/> */}
-  <LandingPage/>
+  {/* <LandingPage/> */}
+  <Analytics/>
   </>
 }
 
