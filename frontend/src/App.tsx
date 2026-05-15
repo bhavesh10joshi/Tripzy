@@ -9,6 +9,7 @@ import { BrowserRouter , Route , Routes} from "react-router-dom";
 import { Notifictions } from "./Pages/Notfifications";
 import { LandingPage } from "./Pages/LandingPage";
 import { Analytics } from "./Pages/Analytics";
+import { MyTripShare } from "./Pages/SharingPage";
 
 function App() {
   return<>
@@ -26,7 +27,8 @@ function App() {
   </BrowserRouter> */}
   {/* <Notifictions/> */}
   {/* <LandingPage/> */}
-  <Analytics/>
+  {/* <Analytics/> */}
+  <MyTripShare/>
   </>
 }
 
