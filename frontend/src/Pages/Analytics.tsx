@@ -1,184 +1,70 @@
 import { Navbar } from "../Components/Navabar"
 import { Footer } from "../Components/Footer"
-import { Button } from "../Ui/Buttons/Button"
-import Maps from "../Images/Maps.png"
-import { AddNew } from "../Ui/Icons/AddNew"
+import { GeographicDistribution } from "../Components/Stats"
+import { TravelTrends } from "../Components/TravelTrends"
 
-export function Analytics()
-{
-    return<>
-        <Navbar/>
-        <div className=" pl-[3rem] pr-[3rem] mt-[5rem]">
-            <div className="flex">
-                <div className="w-full">
-                    <div className="flex">
-                        <div>
-                            <div className="bg-blue-200 text-blue-300 font-mono w-[13rem] flex justify-center items-center rounded-lg">Insight Dashboard</div>
-                            <div className="mt-[0.5rem] text-[3rem] font-semibold">
-                                Travel Analytics
-                            </div>
-                            <div className="w-[40rem] font-light">
-                                Reflecting on your journey through the world. Every mile tracked, every destination curated, and every milestone reached in your global pursuit of excellence.
-                            </div>
-                        </div>
-                        <div className="w-full">
-                            <button aria-label="name" className="pt-[1rem] pb-[1rem] pl-[3rem] pr-[3rem] bg-blue-300 w-full ml-[2rem] h-full rounded-md">
-                                {/* Here comes a plus sign */}
-                                <div className="text-white text-[2rem] fonr-semibold">Plan New Trip</div>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex mt-[6rem] gap-10">
-                        <div className="w-[2/6] bg-slate-100 rounded-md p-[2rem] w-full">
-                            <div className="font-mono text-[1.5rem] font-semibold text-slate-500">TOTAL TRIPS PLANNED</div>
-                            <div className="flex">
-                                <div className="text-blue-700 font-semibold text-[4rem]">42</div>
-                                <div className="mt-[3.5rem] font-mono ml-[0.5rem] text-slate-500">expeditions</div>
-                            </div>
-                        </div>
-                        <div className="w-[2/6] bg-slate-100 rounded-md p-[2rem] w-full">
-                            <div className="font-mono text-[1.5rem] font-semibold text-slate-500">
-                                MOST VISITED
-                            </div>
-                            <div className="text-[2.5rem] font-semibold">
-                                Kyoto,JP
-                            </div>
-                            <div className="text-blue-300 font-bold font-mono">
-                                8 Visits Total
-                            </div>
-                        </div>
-                        <div className="w-[2/6] bg-slate-100 rounded-md p-[2rem] w-full">
-                            <div className="font-mono text-[1.5rem] font-semibold text-slate-500">
-                                Estimated Total Spend
-                            </div>
-                            <div className="text-[4rem] font-bold ">
-                                ₹ 180K
-                            </div>
-                        </div>
-                    </div>
-                </div>
+export function Analytics() {
+  return (
+    <div className="min-h-screen bg-white selection:bg-blue-100">
+      <Navbar />
+      
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 pt-24 pb-20">
+        
+        <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center px-4 py-1.5 bg-blue-50 text-blue-600 font-mono text-xs font-bold rounded-full border border-blue-100 mb-6">
+              Insight Dashboard
             </div>
-            <div className="mt-[5rem] flex flex-col lg:flex-row gap-10">
-    <div className="w-full lg:w-4/6 bg-slate-100 rounded-[2rem] p-[2rem] shadow-xl shadow-slate-200/50 relative overflow-hidden group">
-        <div className="relative z-10">
-            <div className="text-[2.2rem] font-bold tracking-tight text-slate-800">Geographic Distribution</div>
-            <div className="text-slate-600 text-[1rem] font-light">Your footprint across the continents.</div>
-        </div>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 leading-[1.1] mb-6">
+              Travel <span className="text-blue-500 italic">Analytics</span>
+            </h1>
+            <p className="text-lg text-slate-500 font-light leading-relaxed">
+              Reflecting on your journey through the world. Every mile tracked, every destination curated, and every milestone reached in your global pursuit of excellence.
+            </p>
+          </div>
 
-        <div className="relative mt-[2rem] w-full h-full">
-            <img 
-                src={Maps} 
-                alt="World Map" 
-                className="w-full h-auto rounded-[2rem] transition-transform duration-1000 group-hover:scale-[1.02]"
-            />
-            <div className="absolute top-[25%] left-[18%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">North America</span>
-                    <span className="font-bold text-blue-300">100%</span>
-                </div>
+          <button className="group relative overflow-hidden bg-blue-500 hover:bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold text-xl transition-all shadow-xl shadow-blue-200 active:scale-95 flex items-center gap-3">
+            <span>Plan New Trip</span>
+            <svg className="w-6 h-6 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+        </header>
+
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+          {[
+            { label: "TOTAL TRIPS PLANNED", val: "42", unit: "expeditions", color: "text-blue-600" },
+            { label: "MOST VISITED", val: "Kyoto, JP", unit: "8 Visits Total", color: "text-slate-900" },
+            { label: "ESTIMATED TOTAL SPEND", val: "₹ 180K", unit: "Premium Tier", color: "text-slate-900" }
+          ].map((item, i) => (
+            <div key={i} className="bg-slate-50 border border-slate-100 p-8 rounded-[2rem] transition-all hover:bg-white hover:shadow-2xl hover:shadow-slate-100 group">
+              <div className="text-[0.7rem] font-black tracking-[0.2em] text-slate-400 mb-4">{item.label}</div>
+              <div className="flex items-baseline gap-2">
+                <div className={`text-4xl md:text-5xl font-black tracking-tighter ${item.color}`}>{item.val}</div>
+                <div className="text-xs font-mono text-slate-400 group-hover:text-blue-400 transition-colors">{item.unit}</div>
+              </div>
             </div>
-            <div className="absolute top-[60%] left-[18%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">South America</span>
-                    <span className="font-bold text-blue-300">100%</span>
-                </div>
-            </div>
-            <div className="absolute top-[22%] left-[48%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">Europe</span>
-                    <span className="font-bold text-blue-300">0%</span>
-                </div>
-            </div>
-            <div className="absolute top-[42%] left-[48%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">Africa</span>
-                    <span className="font-bold text-blue-300">0%</span>
-                </div>
-            </div>
-            <div className="absolute top-[35%] left-[72%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">Asia</span>
-                    <span className="font-bold text-blue-300">100%</span>
-                </div>
-            </div>
-            <div className="absolute top-[60%] left-[80%] opacity-40 hover:opacity-100 transition-opacity duration-500">
-                <div className="flex justify-center items-center gap-2 rounded-xl px-3 py-1.5 font-mono bg-white/60 backdrop-blur-sm border border-white/50 text-xs">
-                    <span className="text-slate-800">Australia</span>
-                    <span className="font-bold text-blue-300">100%</span>
-                </div>
-            </div>
-        </div>
-        <div className="w-full">
-            <div className="flex">
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div className=""></div>
-                        <div></div>
-                    </div>
-                    <div>Asia</div>
-                </div>
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div>Europe</div>
-                </div>
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div>N. America</div>
-                </div>
-            </div>
-            <div>
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div>S. America</div>
-                </div>
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div>Australia</div>
-                </div>
-                <div className="w-2/6">
-                    <div className="flex">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div>Africa</div>
-                </div>
-            </div>
-        </div>
+          ))}
+        </section>
+
+        <section className="mt-10 flex flex-col lg:flex-row gap-8 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
+          <GeographicDistribution 
+            northAmerica={100} 
+            southAmerica={40} 
+            europe={0} 
+            africa={10} 
+            asia={85} 
+            australia={30}
+          />
+          <TravelTrends 
+            January={10} February={20} March={30} April={5} 
+            May={15} June={0} July={2} August={8} 
+            September={9} October={23} November={22} December={21}
+          />
+        </section>
+      </div>
+
+      <Footer />
     </div>
-
-    <div className="w-full lg:w-2/6 bg-slate-100 rounded-md">
-        <div>Travel Trends</div>
-        <div></div>
-    </div>
-
-    <style>{`
-        @keyframes float-slow {
-            0%, 100% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(-10px) translateX(5px); }
-        }
-        .animate-float-slow {
-            animation: float-slow 6s ease-in-out infinite;
-        }
-    `}</style>
-</div>
-            <div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        <Footer/>
-    </>
+  )
 }
