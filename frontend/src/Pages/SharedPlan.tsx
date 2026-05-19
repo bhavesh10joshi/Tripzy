@@ -9,7 +9,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 
-export function DonePlanning() {
+export function SharedPlan() {
     const [ErrorState, SetErrorState] = useState(false);
     const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
     const [LoadingState, SetLoadingState] = useState(false);
