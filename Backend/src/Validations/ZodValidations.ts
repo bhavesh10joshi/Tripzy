@@ -1,7 +1,3 @@
-
-
-
-
 import { z } from "zod";
 
 export const UserObject = z.object({
@@ -35,14 +31,15 @@ export const DayEventZod = z.object({
 });
 
 export const PlanZod = z.object({
+  PlaceName: z.string(),        
+  ContinentName: z.string(),
+  PlanDescription: z.string(),
+  PlaceImage: z.string(),
   planName: z.string(),
   planDate: z.string(),
-  PlaceImage: z.string(),
   numberOfPeople: z.number(),
   BudgetCategory: z.string(),
   EstimatedTotalCostINR: z.number(),
   hotelList: z.array(HotelZod),
-  events: z.array(DayEventZod),
-  PlaceName: z.string(),        
-  PlanDescription: z.string(),
+  events: z.array(DayEventZod)
 });

@@ -1,44 +1,162 @@
-import { PlanModel} from "../../DB/db";
+import { PlanModel , UserAnalyticsModel, UserModel} from "../../DB/db";
 import { ServerErrors , ClientErrorStatusCodes , SuccessStatusCodes} from "../../StatusCodes/StatusCodes";
 import { Middleware } from "../../Middleware/middleware";
 import { generateItinerary } from "../Services/GeminiApi";
 import { retry } from "../Services/retry";
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
+import { refineItinerary } from "../Services/GeminiApi";
 
 const PlanRouter = Router();
 
-PlanRouter.post("/New" , Middleware , async function(req:any , res:any)
-{
-    const UserId:any = req.UserId;
-    
-    try{
-        const PlanData = await retry(()=>generateItinerary(req.body) , 3);
-        const done = await PlanModel.create({
-            userId : UserId ,
-            ...PlanData , 
-            UniqueId : uuidv4()
+PlanRouter.post("/New", Middleware, async function(req: any, res: any) {
+    const UserId: any = req.UserId;
+
+    try {
+        const UserDetails = await UserModel.findOne({
+            _id : UserId  
         });
-        if(done)
+
+        if(UserDetails)
         {
-            res.status(SuccessStatusCodes.ResourceCreated).json({
-                UniqueId : done.UniqueId
+            const PlanData = await retry(() => generateItinerary(req.body), 3);
+            const done = await PlanModel.create({
+                UsersName : UserDetails.nameofUser , 
+                userId: UserId,
+                ...PlanData, 
+                UniqueId: uuidv4()
             });
-            return;
-        }
+
+            if (done) 
+            {
+                try
+                {
+                    let analyticsDoc: any = await UserAnalyticsModel.findOne({ userId: UserId });
+                    
+                    if (!analyticsDoc) {
+                        await UserAnalyticsModel.create({
+                            userId: UserId,
+                            TotaltripsPlanned: 1,
+                            MostVisitedPlace: [{ PlaceName: PlanData.PlaceName, PlaceVisits: 1 }],
+                            ContinentVists: [{ [PlanData.ContinentName]: 1 }]
+                        });
+                    } 
+                    else 
+                    {
+                        const continentField = `ContinentVists.0.${PlanData.ContinentName}`;
+                        const placeIndex = analyticsDoc.MostVisitedPlace.findIndex(
+                            (p: any) => p.PlaceName.toLowerCase() === PlanData.PlaceName.toLowerCase()
+                        );
+
+                        if (placeIndex !== -1) {
+                            analyticsDoc.TotaltripsPlanned += 1;
+                            analyticsDoc.MostVisitedPlace[placeIndex].PlaceVisits += 1;
+                            
+                            if (analyticsDoc.ContinentVists && analyticsDoc.ContinentVists[0]) {
+                                const currentCount = analyticsDoc.ContinentVists[0][PlanData.ContinentName] || 0;
+                                analyticsDoc.ContinentVists[0][PlanData.ContinentName] = currentCount + 1;
+                            }
+
+                            analyticsDoc.MostVisitedPlace.sort((a: any, b: any) => b.PlaceVisits - a.PlaceVisits);
+                            analyticsDoc.markModified('ContinentVists');
+                            analyticsDoc.markModified('MostVisitedPlace');
+                            await analyticsDoc.save();
+                        } else {
+                            await UserAnalyticsModel.updateOne(
+                                { userId: UserId },
+                                {
+                                    $inc: { 
+                                        TotaltripsPlanned: 1,
+                                        [continentField]: 1
+                                    },
+                                    $push: {
+                                        MostVisitedPlace: {
+                                            $each: [{ PlaceName: PlanData.PlaceName, PlaceVisits: 1 }],
+                                            $sort: { PlaceVisits: -1 }
+                                        }
+                                    }
+                                }
+                            );
+                        }
+                    }
+                } 
+                catch (analyticsError) 
+                {
+                    console.error(analyticsError);
+                }
+
+                res.status(SuccessStatusCodes.ResourceCreated).json({
+                    UniqueId: done.UniqueId
+                });
+                return;
+            } 
+            else 
+            {
+                res.status(ServerErrors.InternalServerError).json({
+                    msg: "Internal Server Error Occurred !"
+                });
+                return;
+            }
+        } 
         else
         {
             res.status(ServerErrors.InternalServerError).json({
-                msg : "Internal Server Error Occurred !"
+                msg: "Internal Server Error Occurred !"
             });
             return;
         }
-    }   
+    }
     catch(e)
     {
-        console.log(e);
         res.status(ServerErrors.InternalServerError).json({
-            msg : "Internal Server Error Occurred !"
+            msg: "Internal Server Error Occurred !"
+        });
+        return;
+    }
+});
+PlanRouter.post("/RefinePlan", Middleware, async function(req: any, res: any) {
+    const UserId: any = req.UserId;
+    const PlanUniqueId = req.body.PlanUniqueId;
+    const RefinePrompt = req.body.RefinePrompt;
+
+    try {
+        const result = await PlanModel.findOne({ UniqueId: PlanUniqueId });
+        if (result) {
+            try {
+                const PlanData = await retry(() => refineItinerary(result, RefinePrompt), 3);
+                const ChangesDone = await PlanModel.updateOne(
+                    { UniqueId: PlanUniqueId },
+                    {
+                        userId: UserId,
+                        ...PlanData, 
+                        UniqueId: PlanUniqueId
+                    }
+                ); 
+                if (ChangesDone.matchedCount === 0) {
+                    res.status(ServerErrors.InternalServerError).json({
+                        msg: "Internal Server Error Occurred !"
+                    });
+                    return;
+                }
+                res.status(SuccessStatusCodes.Success).json({
+                    msg: "Changes made Successfully !"
+                });
+                return;
+            } catch (e) {
+                res.status(ServerErrors.InternalServerError).json({
+                    msg: "Internal Server Error Occurred"
+                });
+                return;
+            }
+        } else {
+            res.status(ClientErrorStatusCodes.ResourceNotFound).json({
+                msg: "No such Itinerary Found"
+            });
+            return;
+        }
+    } catch (e) {
+        res.status(ServerErrors.InternalServerError).json({
+            msg: "Internal Server Error Occurred"
         });
         return;
     }

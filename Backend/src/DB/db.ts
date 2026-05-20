@@ -2,6 +2,20 @@ import mongoose, { Schema, model } from "mongoose";
 
 const ObjectId = Schema.Types.ObjectId;
 
+const PlaceSchema = new Schema({
+  PlaceName : {type : String} , 
+  PlaceVisits : {type : Number , default : 0}
+});
+
+const ContinentSchema = new Schema({
+  NorthAmerica : {type : Number , default : 0} ,
+  Asia : {type : Number , default : 0} ,
+  Europe : {type : Number , default : 0} , 
+  SouthAmerica : {type : Number , default : 0} ,
+  Australia : {type : Number , default : 0} ,
+  Africa : {type : Number , default : 0} ,
+});
+
 const HotelSchema = new Schema({
   NameOfHotel: { type: String, required: true },
   GoogleMapsLocationLink : {type : String , required:true},
@@ -35,7 +49,9 @@ const user = new Schema({
 
 const plan = new Schema({
   userId: { type: ObjectId, required: true }, 
+  UsersName : {type : String , required : true},
   PlaceName: { type: String, required: true },
+  ContinentName : {type:String , required : true},
   PlanDescription: { type: String, required: true },
   PlaceImage: { type: String, required: true }, 
   planName: { type: String, required: true },
@@ -45,8 +61,17 @@ const plan = new Schema({
   EstimatedTotalCostINR: { type: Number, required: true },
   hotelList: [HotelSchema],
   events: [DayEventSchema],
-  UniqueId: { type: String, required: true }
+  UniqueId: { type: String, required: true } , 
+  CanEdit : {type : Boolean , default : false}
+});
+
+const UserAnalytics = new Schema({
+  userId : {type : ObjectId , required : true} , 
+  TotaltripsPlanned : {type : Number , required : true , default : 0} , 
+  MostVisitedPlace : [PlaceSchema] , 
+  ContinentVists : [ContinentSchema]
 });
 
 export const UserModel = model("User", user);
 export const PlanModel = model("Plan", plan);
+export const UserAnalyticsModel = model("UserAnalytics" , UserAnalytics);

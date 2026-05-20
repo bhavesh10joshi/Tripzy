@@ -1,10 +1,11 @@
 import {z} from "zod";
 import bcrypt from "bcrypt";
-import { UserModel } from "../../DB/db";
+import { UserModel , UserAnalyticsModel } from "../../DB/db";
 import jwt from "jsonwebtoken";
 import {Router} from "express";
 import { ServerErrors , ClientErrorStatusCodes , SuccessStatusCodes } from "../../StatusCodes/StatusCodes";
 import { UserObject } from "../../Validations/ZodValidations";
+
 
 const UserRouter = Router();
 
@@ -33,12 +34,14 @@ UserRouter.post("/SignUp", async function(req:any , res:any)
         {
             try
             {
-                await UserModel.create({
+                const User = await UserModel.create({
                     nameofUser : name , 
                     email : SignUp.email , 
                     password : HashedPassword 
                 });
-
+                await UserAnalyticsModel.create({
+                    userId : User._id
+                });
                 res.status(SuccessStatusCodes.ResourceCreated).json({
                     msg : "Signed Up Successfully !"
                 });

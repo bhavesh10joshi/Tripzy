@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import path from "path";
 import PlanRouter from "./Routes/TravelPlan/TravelPlan";
 import UserRouter from "./Routes/User/User";
+import UserPlanAnalyticsRouter from "./Routes/UserTravelAnalytics/Analytics";
 const envPath = path.resolve(process.cwd(), ".env");
 dotenv.config({ path: envPath });
 
@@ -20,6 +21,7 @@ if (!MongoDB_URL) {
 
 app.use("/Tripzy/Api/User" , UserRouter)
 app.use("/Tripzy/Api/TravelPlan" , PlanRouter);
+app.use("/Tripzy/Api/Plan/Analytics" , UserPlanAnalyticsRouter);
 
 app.get("/api/health", (req, res) => {
     res.status(200).send("OK");
@@ -31,7 +33,7 @@ async function main()
 {
     try{
         await mongoose.connect(MongoDB_URL);
-    console.log("Successfully listening on port 8000");
+        console.log("Successfully listening on port 8000");
     }
     catch(e)
     {
