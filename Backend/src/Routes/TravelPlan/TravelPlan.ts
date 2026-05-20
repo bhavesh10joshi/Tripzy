@@ -256,5 +256,5 @@ PlanRouter.get("/View/Plan" , Middleware , async function(req:any ,res:any)
         });
         return;
     }
-})
+});
 export default PlanRouter;
