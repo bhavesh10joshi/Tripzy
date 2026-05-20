@@ -6,7 +6,7 @@ interface ButtonStyles {
     FrontIcon?: ReactElement,
     BackIcon?: ReactElement,
     color: "blue" | "grey" | "white",
-    textColor: "black" | "grey" | "blue" | "white"
+    textColor: "black" | "grey" | "blue" | "white" | "red"
     OnClick?: () => void
 }
 
@@ -27,7 +27,8 @@ const TextColorStyling = {
     "black": "text-black font-bold",
     "grey": "",
     "blue": "text-blue-500 font-bold",
-    "white": "text-white font-bold"
+    "white": "text-white font-bold" ,
+    "red" : "text-red-600 font-bold" 
 }
 
 const defaultStyles = "flex justify-center items-center rounded-md transition-all duration-300 transform hover:scale-[1.05] active:scale-95 hover:shadow-xl cursor-pointer";
