@@ -6,6 +6,8 @@ import path from "path";
 import PlanRouter from "./Routes/TravelPlan/TravelPlan";
 import UserRouter from "./Routes/User/User";
 import UserPlanAnalyticsRouter from "./Routes/UserTravelAnalytics/Analytics";
+import SharedPlanRouter from "./Routes/SharePlan/Shareplan";
+
 const envPath = path.resolve(process.cwd(), ".env");
 dotenv.config({ path: envPath });
 
@@ -22,6 +24,7 @@ if (!MongoDB_URL) {
 app.use("/Tripzy/Api/User" , UserRouter)
 app.use("/Tripzy/Api/TravelPlan" , PlanRouter);
 app.use("/Tripzy/Api/Plan/Analytics" , UserPlanAnalyticsRouter);
+app.use("Tripzy/Api/plan" , SharedPlanRouter);
 
 app.get("/api/health", (req, res) => {
     res.status(200).send("OK");
