@@ -11,20 +11,20 @@ import { LandingPage } from "./Pages/LandingPage";
 import { Analytics } from "./Pages/Analytics";
 import { MyTripShare } from "./Pages/StartSharing";
 import { SharedPlan } from "./Pages/SharedPlan";
-
-function RootRoute()
-{
-  const token = localStorage.getItem("token");
-  if(token)
-  {
-    return <Dashbaord/>;
-  }
-  return <LandingPage/>;
-}
+import { WeatherDetails } from "./Components/WeatherDetails"; 
+// function RootRoute()
+// {
+//   const token = localStorage.getItem("token");
+//   if(token)
+//   {
+//     return <Dashbaord/>;
+//   }
+//   return <LandingPage/>;
+// }
 
 function App() {
   return<>
-  <BrowserRouter>
+  {/* <BrowserRouter>
     <Routes>
       <Route path="/" element={<RootRoute/>}/>    
       <Route path="/LandingPage" element={<LandingPage/>}/>    
@@ -40,7 +40,8 @@ function App() {
       <Route path="/Tripzy/User/Start/Sharing/Plan" element={<MyTripShare/>}/>
       <Route path="/Tripzy/Shared/Plan" element={<SharedPlan/>}/>
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter> */}
+  <WeatherDetails/>
   </>
 }
 
