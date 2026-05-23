@@ -29,6 +29,7 @@ CRITICAL RULES:
 4. "Time" field MUST start with the prefix "Day X - " (e.g., "Day 1 - Morning"). This is mandatory for the parser.
 5. The "PlaceName" MUST match exactly: "${input.destination.trim()}" across the object.
 6. Deduce the standard global continent name based on the destination and fill "ContinentName". It MUST be one of these exact values: "NorthAmerica", "Asia", "Europe", "SouthAmerica", "Australia", "Africa".
+7. Generate an exact 7-day weather trend forecast array in "WeatherForecast" representing standard conditions for the location during the start date month.
 
 REQUIRED SCHEMA:
 {
@@ -62,6 +63,13 @@ REQUIRED SCHEMA:
       "TotalTimeConsumption": number,
       "PriceType": "string",
       "EventDescription": "string"
+    }
+  ],
+  "WeatherForecast": [
+    {
+      "Day": "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday",
+      "Temperature": "XX° / XX°",
+      "WeatherInfo": "ClearSunny" | "Clouds" | "Drizzle" | "Rain" | "ThunderStorm" | "Snow" | "Fog"
     }
   ]
 }
@@ -130,6 +138,7 @@ CRITICAL RULES FOR MODIFICATION:
 3. Every single day MUST still maintain at least 3 distinct events in the "events" array.
 4. "Time" field MUST start with the prefix "Day X - " (e.g., "Day 1 - Morning").
 5. The "PlaceName" and "ContinentName" MUST remain consistent with the original data unless explicitly asked to change locations.
+6. Retain, adapt or keep the "WeatherForecast" array structure matches the schema exactly.
 
 EXISTING PLAN (JSON):
 ${JSON.stringify(flatPlan, null, 2)}
@@ -138,7 +147,6 @@ REFINEMENT INSTRUCTIONS:
 ${refinementPrompt}
 
 REQUIRED OUTPUT SCHEMA:
-Return the completely updated plan matching this exact JSON format layout:
 {
   "PlaceName": "string",
   "ContinentName": "string",
@@ -170,6 +178,13 @@ Return the completely updated plan matching this exact JSON format layout:
       "TotalTimeConsumption": number,
       "PriceType": "string",
       "EventDescription": "string"
+    }
+  ],
+  "WeatherForecast": [
+    {
+      "Day": "string",
+      "Temperature": "string",
+      "WeatherInfo": "string"
     }
   ]
 }

@@ -36,7 +36,9 @@ async function main()
 {
     try{
         await mongoose.connect(MongoDB_URL);
-        console.log("Successfully listening on port 8000");
+        app.listen(3000 , function(){
+            console.log("Successfully listening on port 8000");
+        });
     }
     catch(e)
     {

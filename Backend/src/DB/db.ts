@@ -2,6 +2,12 @@ import mongoose, { Schema, model } from "mongoose";
 
 const ObjectId = Schema.Types.ObjectId;
 
+const WeatherSchema = new Schema({
+  Day : {type : String , required : true} , 
+  Temperature : {type : String , required : true} , 
+  WeatherInfo : {type : String , required : true}
+});
+
 const PlaceSchema = new Schema({
   PlaceName : {type : String} , 
   PlaceVisits : {type : Number , default : 0}
@@ -62,7 +68,8 @@ const plan = new Schema({
   hotelList: [HotelSchema],
   events: [DayEventSchema],
   UniqueId: { type: String, required: true } , 
-  CanEdit : {type : Boolean , default : false}
+  CanEdit : {type : Boolean , default : false} , 
+  WeatherForecast : [WeatherSchema]
 });
 
 const UserAnalytics = new Schema({

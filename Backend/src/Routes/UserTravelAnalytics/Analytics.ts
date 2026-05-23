@@ -7,7 +7,7 @@ const UserPlanAnalyticsRouter = Router();
 
 UserPlanAnalyticsRouter.post("/get" , Middleware , async function(req:any , res:any)
 {
-    const UserId = req.body.UserId;
+    const UserId = req.UserId;
 
     try{
         const result = UserAnalyticsModel.findOne({

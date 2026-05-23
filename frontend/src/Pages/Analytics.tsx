@@ -2,12 +2,49 @@ import { Navbar } from "../Components/Navabar"
 import { Footer } from "../Components/Footer"
 import { GeographicDistribution } from "../Components/Stats"
 import { TravelTrends } from "../Components/TravelTrends"
-import { useState } from "react"
+import { useState , useEffect} from "react"
+import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
+import axios from "axios"
 
 export function Analytics() {
   const [ErrorState, SetErrorState] = useState(false);
   const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
   const [LoadingState, SetLoadingState] = useState(false);
+  const [AnalyticsData , SetAnalyticsData] = useState([]);
+  async function BackendHit()
+  {
+    const token = localStorage.getItem("token");
+    const config = {
+          headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json'
+          }
+    };
+    try
+    { 
+      const data:any = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/Plan/Analytics/get` , config );
+      if(data)
+      {
+        SetLoadingState(false);
+        SetAnalyticsData(data);
+        return;
+      }
+      else
+      {
+        
+      }
+
+    }
+    catch(e)
+    {
+      SetLoadingState(true);
+    }
+  }
+  useEffect(function()
+  {
+
+  } , []);
+
 
   return (
     <div className="min-h-screen bg-white selection:bg-blue-100 relative">

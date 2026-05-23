@@ -5,6 +5,12 @@ export const UserObject = z.object({
   Password: z.string().min(2)
 });
 
+export const WeatherZod = z.object({
+  Day: z.enum(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]),
+  Temperature: z.string(),
+  WeatherInfo: z.string()
+});
+
 export const HotelZod = z.object({
   NameOfHotel: z.string(),
   LocationOfHotel: z.string(),
@@ -32,7 +38,7 @@ export const DayEventZod = z.object({
 
 export const PlanZod = z.object({
   PlaceName: z.string(),        
-  ContinentName: z.string(),
+  ContinentName: z.enum(["NorthAmerica", "Asia", "Europe", "SouthAmerica", "Australia", "Africa"]),
   PlanDescription: z.string(),
   PlaceImage: z.string(),
   planName: z.string(),
@@ -41,5 +47,6 @@ export const PlanZod = z.object({
   BudgetCategory: z.string(),
   EstimatedTotalCostINR: z.number(),
   hotelList: z.array(HotelZod),
-  events: z.array(DayEventZod)
+  events: z.array(DayEventZod),
+  WeatherForecast: z.array(WeatherZod)
 });
