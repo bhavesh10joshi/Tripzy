@@ -33,29 +33,35 @@ SharedPlanRouter.get("/Share/:PlanUniqueId" , Middleware , async function(req:an
         return;
     }
 });
-SharedPlanRouter.post("/Settings/Edit/Approval" , Middleware , async function(req:any , res:any)
-{
+SharedPlanRouter.post("/Settings/Edit/Approval", Middleware, async function(req: any, res: any) {
     const PlanUniqueId = req.body.PlanUniqueId;
-    const Decision : Boolean = req.body.Decision;
+    const Decision: boolean = req.body.Decision;
 
-    try{
-        await PlanModel.updateOne(
+    try {
+        const updatedPlan = await PlanModel.findOneAndUpdate(
             { UniqueId: PlanUniqueId },
-            {
-                CanEdit : Decision
-            }
-        ); 
+            { $set: { CanEdit: Decision } },
+            { new: true } // This returns the updated document instead of the old one
+        );
+
+        if (!updatedPlan) {
+            res.status(500).json({
+                msg: "No such Itinerary Found"
+            });
+            return;
+        }
+
         res.status(SuccessStatusCodes.Success).json({
-            msg : "The changes has been set !"
+            msg: "The changes have been set!",
+            Data: updatedPlan
         });
-        return ;
+        return;
     }
-    catch(e)
-    {
+    catch (e) {
         res.status(ServerErrors.InternalServerError).json({
-            msg : "Internal Server Error !"
+            msg: "Internal Server Error !"
         });
-        return ;
+        return;
     }
 });
 SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:any , res:any)
