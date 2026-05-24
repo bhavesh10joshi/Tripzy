@@ -3,8 +3,28 @@ import LPPhoto from "../Images/LPPhoto.png"
 import { AIMagic } from "../Ui/Icons/AIMagic"
 import { Collab } from "../Ui/Icons/Collaboration"
 import { WritePlan } from "../Ui/Icons/WritePlan"
+import { useNavigate } from "react-router-dom"
+import { useState , useEffect} from "react"
 
 export function LandingPage() {
+    const[IsLogin , SetIsLogin] = useState(false);
+    const Navigation = useNavigate();
+
+    useEffect(function()
+    {
+        const token = localStorage.getItem("token");
+        if(token)
+        {
+            SetIsLogin(true);
+            return;
+        }
+        else
+        {
+            SetIsLogin(false);
+            return;
+        }
+    } , []);
+    
     return (
         <>
             <div className="pt-4 pb-8 overflow-x-hidden selection:bg-blue-100 bg-white">
@@ -13,8 +33,16 @@ export function LandingPage() {
                         TripzyAI
                     </div>
                     <div className="flex justify-end items-center gap-2 md:gap-4">
-                        <Button color="white" size="middle" text="SignIn" textColor="grey"/>
-                        <Button color="blue" size="middle" text="Start Planning" textColor="white"/>
+                        {
+                            !IsLogin
+                            ? <Button color="white" size="middle" text="SignIn" textColor="grey" OnClick={() => Navigation("/Tripzy/Login")}/>
+                            : <Button color="white" size="middle" text="My Plans" textColor="grey" OnClick={() => Navigation("/Tripzy/User/MyTrips/View/All")}/> 
+                        }
+                        {
+                            IsLogin
+                            ? <Button color="blue" size="middle" text="Start Planning" textColor="white" OnClick={() => Navigation("/Tripzy/User/Plan/NewTrip")}/>
+                            : <Button color="blue" size="middle" text="Create Account" textColor="white" OnClick={() => Navigation("/Tripzy/User/SignUp")}/> 
+                        }
                     </div>
                 </nav>
 
@@ -29,9 +57,9 @@ export function LandingPage() {
                                 Experience an Intelligent Concierge that learns your unique taste, curating bespoke journeys that evolve with every step you take.
                             </p>
                             <div className="flex flex-wrap justify-center lg:justify-start items-center gap-4 mt-10">
-                                <Button color="grey" size="secondry" text="Experience the Future" textColor="grey"/>
+                                <Button color="grey" size="secondry" text="Experience the Future" textColor="grey" OnClick={() => Navigation("/Tripzy/User/SignUp")}/>
                                 <div className="shadow-[0_20px_40px_-10px_rgba(59,130,246,0.3)] rounded-full transition-hover hover:scale-105 duration-300">
-                                    <Button color="blue" size="secondry" text="Get Started" textColor="white"/>
+                                    <Button color="blue" size="secondry" text="Get Started" textColor="white" OnClick={() => Navigation("/Tripzy/Login")}/>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +149,7 @@ export function LandingPage() {
                                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">Your next Legacy Journey <br /> Starts now.</h2>
                                 <p className="text-blue-100 font-light mt-6 text-xl max-w-lg leading-relaxed">Join a community of travelers who value depth, discovery, and design.</p>
                                 <div className="mt-12 scale-125 hover:scale-135 transition-transform duration-500">
-                                    <Button color="white" size="secondry" text="Get Started for Free" textColor="blue"/>
+                                    <Button color="white" size="secondry" text="Get Started for Free" textColor="blue" OnClick={() => Navigation("/Tripzy/User/SignUp")}/>
                                 </div>
                                 <p className="text-white/60 text-[0.7rem] mt-10 tracking-[0.2em] uppercase font-bold">No credit card required • Pure exploration</p>
                             </div>

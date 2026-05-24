@@ -2,11 +2,19 @@ import { Location2 } from "../Ui/Icons/Location2"
 import { WeatherCard } from "./DayWeatherCard"
 import { LightBulb } from "../Ui/Icons/LightBulb"
 
-interface WeatherDetailsProps {
-  PlaceName ?: string;
+interface weatherData {
+  Day: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday";
+  Temperature: string;
+  WeatherInfo: "ClearSunny" | "Clouds" | "Drizzle" | "Rain" | "ThunderStorm" | "Snow" | "Fog"
+  onClick?: () => void;
 }
 
-export function WeatherDetails({ PlaceName = "Unknown Location" }: WeatherDetailsProps) {
+interface WeatherDetailsProps {
+  WeatherInfo?: weatherData[];
+  PlaceName?: string;
+}
+
+export function WeatherDetails({ WeatherInfo = [], PlaceName = "Unknown Location" }: WeatherDetailsProps) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-8 md:py-12">
       
@@ -24,13 +32,15 @@ export function WeatherDetails({ PlaceName = "Unknown Location" }: WeatherDetail
         
         <div className="lg:col-span-4 overflow-x-auto pb-4 pt-1 px-1 -mx-4 md:mx-0 md:px-0 flex gap-4 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent snap-x snap-mandatory">
           <div className="flex gap-4 px-4 md:px-0 md:flex-wrap">
-            <div className="snap-center"><WeatherCard Day="Sunday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Monday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Tuesday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Wednesday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Thursday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Friday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
-            <div className="snap-center"><WeatherCard Day="Saturday" Temperature="22° / 15°" WeatherType="ClearSunny" WeatherInfo="Clear Sunny" /></div>
+            {WeatherInfo && WeatherInfo.map((day, index) => (
+              <div key={index} className="snap-center">
+                <WeatherCard 
+                  Day={day.Day} 
+                  Temperature={day.Temperature} 
+                  WeatherType={day.WeatherInfo} 
+                />
+              </div>
+            ))}
           </div>
         </div>
         
@@ -45,7 +55,7 @@ export function WeatherDetails({ PlaceName = "Unknown Location" }: WeatherDetail
               </h3>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-slate-600">
-              Mornings can be crisp while afternoons stay mild. Light layers, comfortable walking shoes, and a compact umbrella are highly recommended for your trip to Tokyo and Kyoto.
+              Mornings can be crisp while afternoons stay mild. Light layers, comfortable walking shoes, and a compact umbrella are highly recommended for your trip to {PlaceName}.
             </p>
           </div>
         </div>

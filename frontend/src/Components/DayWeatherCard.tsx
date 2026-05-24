@@ -10,7 +10,6 @@ interface WeatherCardProps {
   Day: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday";
   Temperature: string;
   WeatherType: "ClearSunny" | "Clouds" | "Drizzle" | "Rain" | "ThunderStorm" | "Snow" | "Fog";
-  WeatherInfo: string;
   onClick?: () => void;
 }
 
@@ -34,7 +33,7 @@ const IconsMapping = {
   "Fog": <Fog />
 }
 
-export function WeatherCard({ Day, Temperature, WeatherType, WeatherInfo, onClick }: WeatherCardProps) {
+export function WeatherCard({ Day, Temperature, WeatherType , onClick }: WeatherCardProps) {
   return (
     <button
       onClick={onClick}
@@ -53,7 +52,7 @@ export function WeatherCard({ Day, Temperature, WeatherType, WeatherInfo, onClic
           {Temperature}
         </div>
         <div className="text-xs font-medium text-slate-400 group-hover:text-slate-500 truncate px-1">
-          {WeatherInfo}
+          {WeatherType}
         </div>
       </div>
     </button>

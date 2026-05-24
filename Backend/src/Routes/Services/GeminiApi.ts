@@ -30,6 +30,7 @@ CRITICAL RULES:
 5. The "PlaceName" MUST match exactly: "${input.destination.trim()}" across the object.
 6. Deduce the standard global continent name based on the destination and fill "ContinentName". It MUST be one of these exact values: "NorthAmerica", "Asia", "Europe", "SouthAmerica", "Australia", "Africa".
 7. Generate an exact 7-day weather trend forecast array in "WeatherForecast" representing standard conditions for the location during the start date month.
+8. You MUST generate between 5 to 10 distinct hotel recommendations in the "hotelList" array, covering a comprehensive price range spanning budget, mid-range, premium, and luxury choices tailored around the destination.
 
 REQUIRED SCHEMA:
 {
@@ -139,6 +140,7 @@ CRITICAL RULES FOR MODIFICATION:
 4. "Time" field MUST start with the prefix "Day X - " (e.g., "Day 1 - Morning").
 5. The "PlaceName" and "ContinentName" MUST remain consistent with the original data unless explicitly asked to change locations.
 6. Retain, adapt or keep the "WeatherForecast" array structure matches the schema exactly.
+7. You MUST ensure the updated or returned plan maintains between 5 to 10 distinct hotel options in the "hotelList" covering various matching baseline budgets.
 
 EXISTING PLAN (JSON):
 ${JSON.stringify(flatPlan, null, 2)}

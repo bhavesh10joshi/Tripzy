@@ -124,27 +124,43 @@ PlanRouter.post("/RefinePlan", Middleware, async function(req: any, res: any) {
         if (result) {
             try {
                 const PlanData = await retry(() => refineItinerary(result, RefinePrompt), 3);
-                const ChangesDone = await PlanModel.updateOne(
+                
+                const ChangesDone = await PlanModel.findOneAndUpdate(
                     { UniqueId: PlanUniqueId },
                     {
-                        userId: UserId,
-                        ...PlanData, 
-                        UniqueId: PlanUniqueId
-                    }
-                ); 
-                if (ChangesDone.matchedCount === 0) {
+                        $set: {
+                            userId: UserId,
+                            PlaceName: PlanData.PlaceName,
+                            ContinentName: PlanData.ContinentName,
+                            PlanDescription: PlanData.PlanDescription,
+                            PlaceImage: PlanData.PlaceImage,
+                            planName: PlanData.planName,
+                            planDate: PlanData.planDate,
+                            numberOfPeople: PlanData.numberOfPeople,
+                            BudgetCategory: PlanData.BudgetCategory,
+                            EstimatedTotalCostINR: PlanData.EstimatedTotalCostINR,
+                            hotelList: PlanData.hotelList,
+                            events: PlanData.events,
+                            WeatherForecast: PlanData.WeatherForecast
+                        }
+                    },
+                    { new: true }
+                );
+
+                if (!ChangesDone) {
                     res.status(ServerErrors.InternalServerError).json({
-                        msg: "Internal Server Error Occurred !"
+                        msg: "Internal Server Error Occurred During Update!"
                     });
                     return;
                 }
+
                 res.status(SuccessStatusCodes.Success).json({
-                    msg: "Changes made Successfully !"
+                    Data: ChangesDone
                 });
                 return;
             } catch (e) {
                 res.status(ServerErrors.InternalServerError).json({
-                    msg: "Internal Server Error Occurred"
+                    msg: "Internal Server Error Occurred during itinerary generation"
                 });
                 return;
             }

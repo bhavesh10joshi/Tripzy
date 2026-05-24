@@ -11,6 +11,17 @@ export function Analytics() {
   const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
   const [LoadingState, SetLoadingState] = useState(false);
   const [AnalyticsData , SetAnalyticsData] = useState([]);
+  useEffect(function()
+  {
+    if(ErrorState)
+    {
+      const timeout = setTimeout(function()
+      {
+        SetErrorState(false);
+      },3000);
+      return clearTimeout(timeout);
+    }
+  },[ErrorState]);
   async function BackendHit()
   {
     const token = localStorage.getItem("token");
@@ -31,21 +42,22 @@ export function Analytics() {
       }
       else
       {
-        
+        SetLoadingState(false);
+        SetErrorState(true);
+        return;
       }
-
     }
     catch(e)
     {
       SetLoadingState(true);
+      SetErrorState(true);
+      return;
     }
   }
   useEffect(function()
   {
-
+    BackendHit();
   } , []);
-
-
   return (
     <div className="min-h-screen bg-white selection:bg-blue-100 relative">
       <Navbar />
