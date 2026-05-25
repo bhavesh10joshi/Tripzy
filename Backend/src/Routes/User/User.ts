@@ -90,9 +90,15 @@ UserRouter.post("/Login" , async function(req : any , res : any)
                 const Check = await bcrypt.compare(password , FindUser.password);
                 if(Check)
                 {
+                    if (!process.env.JWT_PASS) {
+                        return res.status(ServerErrors.InternalServerError).json({
+                            msg : "Server configuration error: JWT_PASS is missing"
+                        });
+                    }
+
                     const token = jwt.sign({
                         id : FindUser._id
-                    }, process.env.JWT_SECRET as string);
+                    }, process.env.JWT_PASS as string);
                     res.status(SuccessStatusCodes.Success).json({
                         token : token
                     });
