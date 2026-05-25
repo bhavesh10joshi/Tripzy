@@ -10,7 +10,9 @@ Planning a vacation often involves juggling multiple tabs, mapping out locations
 - **Frontend:** React, TypeScript, Tailwind CSS, Vite
 - **Backend:** Node.js, Express, TypeScript
 - **Database:** MongoDB
+- **Caching:** Redis (with in-memory fallback)
 - **AI Integration:** Google Generative AI (Gemini 1.5 Flash)
+- **PDF Generation:** Puppeteer / PDFKit
 - **Deployment:** Vercel (Frontend), Render (Backend)
 
 ## Project Structure
@@ -89,10 +91,24 @@ TripzyAI/
 ## System Diagram & Data Flow
 1. **User Input:** The user submits preferences (destination, days, budget, people) via the React frontend.
 2. **API Request:** Frontend calls the Express Backend (`/Tripzy/Api/TravelPlan/Generate`).
-3. **AI Generation:** Backend constructs a prompt and hits the Google Gemini API.
-4. **Validation:** The AI response is parsed, formatted into days/events, and validated using Zod.
-5. **Database Storage:** The valid itinerary is saved to MongoDB.
-6. **Response:** The generated plan is returned to the frontend and rendered elegantly.
+3. **Cache Check:** Backend checks Redis for an existing generated plan to return a fast response.
+4. **AI Generation:** If no cache is found, the backend constructs a prompt and hits the Google Gemini API.
+5. **Validation:** The AI response is parsed, formatted into days/events, and validated using Zod.
+6. **Database Storage & Caching:** The valid itinerary is saved to MongoDB and cached in Redis.
+7. **Response:** The generated plan is returned to the frontend and rendered elegantly.
+
+## Key Features
+- **AI-Powered Itineraries:** Generates multi-day plans with day-by-day events, optimized routes, and budget estimates.
+- **Refine Itinerary:** Users can further refine and modify AI-generated plans using additional prompts.
+- **Shared Plans:** Easily share itineraries via a public link. Viewers can also refine the plan if editing is enabled.
+- **Travel Analytics:** A dedicated dashboard visualizing your travel trends, most visited places, and geographic distribution.
+- **PDF Export:** Download your generated itinerary as a beautifully formatted PDF.
+
+## Performance & Caching (Redis)
+To ensure the website feels incredibly fast when accessing shared or recent plans, TripzyAI implements a robust caching strategy using **Redis**.
+- **Plan Retrieval:** Shared plans and itineraries are cached in Redis using a `tripzy:itinerary:[UniqueId]` key namespace.
+- **Cache Invalidation:** Any updates to a plan (editing details or refining AI itineraries) automatically invalidate the existing cache to ensure data consistency.
+- **Fallback Mechanism:** For environments without a running Redis instance, the backend gracefully falls back to an in-memory caching service, ensuring seamless development.
 
 ## Database Schema / E-R Diagram Structure
 - **User Collection:** `_id`, `name`, `email`, `password`, `trips` (References to TravelPlan).

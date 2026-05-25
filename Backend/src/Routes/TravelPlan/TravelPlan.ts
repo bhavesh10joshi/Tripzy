@@ -6,6 +6,7 @@ import { retry } from "../Services/retry";
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { refineItinerary } from "../Services/GeminiApi";
+import { getCache, setCache, deleteCache } from "../../Services/redisService";
 
 const PlanRouter = Router();
 
@@ -154,6 +155,8 @@ PlanRouter.post("/RefinePlan", Middleware, async function(req: any, res: any) {
                     return;
                 }
 
+                await deleteCache(PlanUniqueId);
+
                 res.status(SuccessStatusCodes.Success).json({
                     Data: ChangesDone
                 });
@@ -183,10 +186,21 @@ PlanRouter.post("/Show/Existing" , Middleware , async function(req:any , res:any
     const PlanUniqueId = req.body.PlanUniqueId;
     
     try{
+        const cached = await getCache(PlanUniqueId);
+        if (cached) {
+            res.status(SuccessStatusCodes.Success).json({
+                Data : cached
+            });
+            return;
+        }
+
         const Data = await PlanModel.findOne({
             userId : UserId , 
             UniqueId : PlanUniqueId
         });
+        if (Data) {
+            await setCache(PlanUniqueId, Data);
+        }
         res.status(SuccessStatusCodes.Success).json({
             Data : Data
         });
@@ -229,6 +243,7 @@ PlanRouter.post("/Delete/Plan" , Middleware , async function(req:any,res:any)
         await PlanModel.deleteOne({
             UniqueId : PlanUniqueId
         });
+        await deleteCache(PlanUniqueId);
         res.status(SuccessStatusCodes.Success).json({
             msg : "Plan Deleted Successfully !"
         });
@@ -247,11 +262,20 @@ PlanRouter.get("/View/Plan" , Middleware , async function(req:any ,res:any)
     const PlanUniqueId = req.body.PlanUniqueId;
 
     try{
+        const cached = await getCache(PlanUniqueId);
+        if (cached) {
+            res.status(SuccessStatusCodes.Success).json({
+                msg : cached
+            });
+            return;
+        }
+
         const result = await PlanModel.findOne({
             UniqueId : PlanUniqueId
         });
         if(result)
         {
+            await setCache(PlanUniqueId, result);
             res.status(SuccessStatusCodes.Success).json({
                 msg : result
             });

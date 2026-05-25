@@ -8,14 +8,17 @@ import { Footer } from "../Components/Footer"
 import { Button } from "../Ui/Buttons/Button"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import { VITE_BACKEND_URL } from "../BackendUrl/BackendUrl"
 
 export function SharedPlan() {
+    const { UniqueId } = useParams();
     const [ErrorState, SetErrorState] = useState(false);
     const [ErrorDetail, SetErrorDetail] = useState("Network Error : Please Try again later");
     const [LoadingState, SetLoadingState] = useState(false);
-    const [PlanData, SetPlanData]: any = useState([{}]);
-    
+    const [PlanData, SetPlanData]: any = useState([]);
+    const [CanEdit, SetCanEdit] = useState(false);
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedData, setEditedData] = useState<any>([]);
     const [statusOverlay, setStatusOverlay] = useState<{ show: boolean; success: boolean; message: string }>({
@@ -23,6 +26,9 @@ export function SharedPlan() {
         success: true,
         message: ""
     });
+
+    const [refineState, setRefineState] = useState(false);
+    const [refinePrompt, setRefinePrompt] = useState("");
 
     useEffect(function () {
         if (ErrorState) {
@@ -39,25 +45,17 @@ export function SharedPlan() {
             BackendCall();
         }, 2000);
         return () => clearTimeout(TimeOut);
-    }, []);
+    }, [UniqueId]);
 
     async function BackendCall() {
-        const token = localStorage.getItem("token");
-        const PlanUniqueId = localStorage.getItem("UniqueId");
-        const payload = { PlanUniqueId: PlanUniqueId };
-        const config = {
-            headers: {
-                'Authorization': token,
-                'Content-Type': 'application/json'
-            }
-        };
         try {
-            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Show/Existing`, payload, config);
-            if (result.data.Data) {
-                SetPlanData([result.data.Data]);
+            const result = await axios.get(`${VITE_BACKEND_URL}/Tripzy/Api/plan/Share/${UniqueId}`);
+            if (result.data.msg) {
+                SetPlanData([result.data.msg]);
+                SetCanEdit(result.data.msg.CanEdit || false);
                 SetLoadingState(false);
             } else {
-                SetErrorDetail("Backend returned empty Data. Itinerary may have been deleted or not found.");
+                SetErrorDetail("This plan is not shared or does not exist.");
                 SetErrorState(true);
                 SetLoadingState(false);
             }
@@ -89,11 +87,8 @@ export function SharedPlan() {
 
     const handleSaveEdits = async () => {
         const token = localStorage.getItem("token");
-        const PlanUniqueId = localStorage.getItem("UniqueId");
-        const payload = { 
-            PlanUniqueId: PlanUniqueId,
-            UpdatedData: editedData[0] 
-        };
+        const editedTrip = editedData[0];
+        const originalTrip = PlanData[0];
         const config = {
             headers: {
                 'Authorization': token,
@@ -101,23 +96,26 @@ export function SharedPlan() {
             }
         };
 
+        const fieldsToCheck = ["planName", "planDate", "numberOfPeople", "BudgetCategory", "EstimatedTotalCostINR", "PlanDescription"];
+        
         try {
-            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/Update`, payload, config);
-            if (result.status === 200) {
-                SetPlanData(JSON.parse(JSON.stringify(editedData)));
-                setIsEditing(false);
-                setStatusOverlay({
-                    show: true,
-                    success: true,
-                    message: "Changes reflected successfully!"
-                });
-            } else {
-                setStatusOverlay({
-                    show: true,
-                    success: false,
-                    message: "Failed to update the itinerary."
-                });
+            for (const field of fieldsToCheck) {
+                if (editedTrip[field] !== originalTrip[field]) {
+                    await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/plan/Change/Existing/Plan`, {
+                        PlanUniqueId: UniqueId,
+                        WhatToChange: field,
+                        NewData: editedTrip[field]
+                    }, config);
+                }
             }
+
+            SetPlanData(JSON.parse(JSON.stringify(editedData)));
+            setIsEditing(false);
+            setStatusOverlay({
+                show: true,
+                success: true,
+                message: "Changes reflected successfully!"
+            });
         } catch (e: any) {
             setStatusOverlay({
                 show: true,
@@ -126,6 +124,42 @@ export function SharedPlan() {
             });
         }
     };
+
+    async function handleRefineSubmit() {
+        if (!refinePrompt.trim()) return;
+        setRefineState(false);
+        SetLoadingState(true);
+        const token = localStorage.getItem("token");
+        const payload = { 
+            PlanUniqueId: UniqueId,
+            RefinePrompt: refinePrompt 
+        };
+        const config = {
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            const result = await axios.post(`${VITE_BACKEND_URL}/Tripzy/Api/TravelPlan/RefinePlan`, payload, config);
+            if (result.data && result.data.Data) {
+                SetPlanData([result.data.Data]);
+                if (isEditing) {
+                    setEditedData([result.data.Data]);
+                }
+                setRefinePrompt("");
+                SetLoadingState(false);
+            } else {
+                SetErrorDetail("Refinement failed to return updated data wrapper.");
+                SetErrorState(true);
+                SetLoadingState(false);
+            }
+        } catch (e: any) {
+            SetErrorDetail(e.response?.data?.msg || e.message || "Refinement Network Error.");
+            SetErrorState(true);
+            SetLoadingState(false);
+        }
+    }
 
     const displayData = isEditing ? editedData : PlanData;
 
@@ -157,11 +191,53 @@ export function SharedPlan() {
             </div>
         )}
 
+        {refineState && (
+            <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                <div className="bg-white w-full max-w-2xl rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-100 transform transition-all animate-in zoom-in-95 duration-200">
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600">
+                            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                            </svg>
+                        </div>
+                        <h2 className="text-xl font-black text-slate-900 tracking-tight">Refine Itinerary with AI</h2>
+                    </div>
+                    <p className="text-slate-500 text-sm mb-4 leading-relaxed">
+                        Tell the AI what changes you want to apply to this trip setup. You can ask to add attractions, swap hotel tiers, or alter daily timetables completely.
+                    </p>
+                    <textarea
+                        value={refinePrompt}
+                        onChange={(e) => setRefinePrompt(e.target.value)}
+                        placeholder="e.g., Change the hotel tier to a luxury resort and add more historical sightseeing locations to Day 2 afternoon layout..."
+                        className="w-full h-40 p-4 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-slate-800 placeholder-slate-400 text-sm shadow-inner bg-slate-50/50"
+                    />
+                    <div className="flex items-center justify-end gap-3 mt-6">
+                        <button
+                            onClick={() => {
+                                setRefineState(false);
+                                setRefinePrompt("");
+                            }}
+                            className="px-5 h-11 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                        >
+                            Discard
+                        </button>
+                        <button
+                            onClick={handleRefineSubmit}
+                            disabled={!refinePrompt.trim()}
+                            className="px-6 h-11 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:pointer-events-none shadow-md transition-colors"
+                        >
+                            Refine Itinerary
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
         <div className="w-full flex justify-between items-center px-4 md:px-[2rem] pt-6">
             <div className="text-2xl font-black tracking-tight text-slate-900">
-                {isEditing ? "Editing Itinerary" : "View Itinerary"}
+                {isEditing ? "Editing Itinerary" : "Shared Itinerary"}
             </div>
-            {!isEditing && !LoadingState && PlanData.length > 0 && (
+            {CanEdit && !isEditing && !LoadingState && PlanData.length > 0 && (
                 <button 
                     onClick={handleStartEditing}
                     className="flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-xl shadow-md transition-all text-sm"
@@ -178,7 +254,7 @@ export function SharedPlan() {
                         <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch relative">
                             <div className="flex justify-start items-center flex-col w-full md:w-1/2 bg-slate-100 p-6 md:p-[2rem] rounded-md hover:shadow-lg transition-shadow">
                                 <div className="text-blue-400 font-mono font-bold flex justify-start items-center w-full text-[0.9rem] tracking-widest">
-                                    <span className="font-extrabold text-blue-500 italic font-sans mr-[0.5rem]">Bhavesh's</span> Curated Itinerary
+                                    <span className="font-extrabold text-blue-500 italic font-sans mr-[0.5rem]">{trips.UsersName || "Shared"}'s</span> Curated Itinerary
                                 </div>
                                 <div className="font-extrabold text-[3rem] md:text-[4rem] text-slate-900 w-full mt-[-0.5rem] md:mt-[-1rem]">
                                     {isEditing ? (
@@ -317,6 +393,15 @@ export function SharedPlan() {
                 {isEditing && (
                     <div className="w-full flex justify-end items-center mt-[2rem] pr-[3rem] mb-6 animate-in slide-in-from-bottom duration-300">
                         <div className="flex gap-5">
+                            <button 
+                                onClick={() => setRefineState(true)}
+                                className="flex justify-center items-center gap-2 bg-[#0052cc] hover:bg-[#0043a4] text-white font-bold py-2.5 px-5 rounded-xl shadow-md transition-all text-sm"
+                            >
+                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
+                                </svg>
+                                Refine with AI
+                            </button>
                             <div onClick={handleDiscardChanges}>
                                 <Button text="discard Changes" textColor="red" color="grey" size="secondry"/>
                             </div>
@@ -330,12 +415,12 @@ export function SharedPlan() {
         ) : LoadingState ? (
             <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-400"></div>
-                <div className="mt-4 font-bold text-slate-500">Loading your masterpiece...</div>
+                <div className="mt-4 font-bold text-slate-500">Loading shared itinerary...</div>
             </div>
         ) : (
             <div className="flex flex-col items-center justify-center h-[60vh] opacity-50">
                 <div className="text-4xl mb-4">🏜️</div>
-                <div className="mt-4 font-bold text-slate-500">Could not find itinerary data.</div>
+                <div className="mt-4 font-bold text-slate-500">This plan is not shared or does not exist.</div>
             </div>
         )}
         <Footer />

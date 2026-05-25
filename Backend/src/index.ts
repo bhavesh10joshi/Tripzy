@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors"
 import dotenv from "dotenv";
+import dns from "dns";
+
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 import path from "path";
 import PlanRouter from "./Routes/TravelPlan/TravelPlan";
 import UserRouter from "./Routes/User/User";
@@ -45,7 +48,7 @@ async function main()
     }
     catch(e)
     {
-        console.log("Error Occured while listening !");
+        console.log("Error Occured while listening !", e);
         return;
     }
 }

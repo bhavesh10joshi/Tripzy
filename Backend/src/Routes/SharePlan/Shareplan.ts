@@ -2,14 +2,23 @@ import { Router } from "express";
 import { Middleware } from "../../Middleware/middleware";
 import { PlanModel } from "../../DB/db";
 import { ServerErrors , SuccessStatusCodes } from "../../StatusCodes/StatusCodes";
+import { getCache, setCache, deleteCache } from "../../Services/redisService";
 const SharedPlanRouter = Router();
 
-SharedPlanRouter.get("/Share/:PlanUniqueId" , Middleware , async function(req:any , res:any)
+SharedPlanRouter.get("/Share/:PlanUniqueId" , async function(req:any , res:any)
 {
     const {PlanUniqueId}= req.params;
 
     try
     {
+        const cached = await getCache(PlanUniqueId);
+        if (cached) {
+            res.status(SuccessStatusCodes.Success).json({
+                msg : cached
+            });
+            return;
+        }
+
         const result = await PlanModel.findOne({
             UniqueId : PlanUniqueId
         });
@@ -20,6 +29,9 @@ SharedPlanRouter.get("/Share/:PlanUniqueId" , Middleware , async function(req:an
             });
             return;
         }
+
+        await setCache(PlanUniqueId, result);
+
         res.status(SuccessStatusCodes.Success).json({
             msg : result
         });
@@ -41,7 +53,7 @@ SharedPlanRouter.post("/Settings/Edit/Approval", Middleware, async function(req:
         const updatedPlan = await PlanModel.findOneAndUpdate(
             { UniqueId: PlanUniqueId },
             { $set: { CanEdit: Decision } },
-            { new: true } // This returns the updated document instead of the old one
+            { new: true }
         );
 
         if (!updatedPlan) {
@@ -50,6 +62,8 @@ SharedPlanRouter.post("/Settings/Edit/Approval", Middleware, async function(req:
             });
             return;
         }
+
+        await deleteCache(PlanUniqueId);
 
         res.status(SuccessStatusCodes.Success).json({
             msg: "The changes have been set!",
@@ -81,6 +95,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             PlanDescription : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -105,6 +120,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             planName : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -129,6 +145,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             planDate : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -153,6 +170,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             numberOfPeople : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -177,6 +195,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             BudgetCategory : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -201,6 +220,7 @@ SharedPlanRouter.post("/Change/Existing/Plan" , Middleware , async function(req:
                             EstimatedTotalCostINR : NewData
                         }
                     ); 
+                    await deleteCache(PlanUniqueId);
                     res.status(SuccessStatusCodes.Success).json({
                         msg : "Changes Made Successfully !" 
                     });
@@ -258,6 +278,8 @@ SharedPlanRouter.post("/Change/Existing/Plan/Event", Middleware, async (req: any
         if (!updatedPlan) {
             return res.status(404).json({ msg: "Plan not found." });
         }
+
+        await deleteCache(PlanUniqueId);
 
         return res.status(SuccessStatusCodes.Success).json({
             msg: "Changes Made Successfully !",

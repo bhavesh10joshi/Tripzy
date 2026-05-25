@@ -38,7 +38,7 @@ function App() {
       <Route path="/Tripzy/User/Notifictions" element={<Notifictions/>}/>
       <Route path="/Tripzy/User/Planning/Analytics" element={<Analytics/>}/>
       <Route path="/Tripzy/User/Start/Sharing/Plan" element={<MyTripShare/>}/>
-      <Route path="/Tripzy/Shared/Plan" element={<SharedPlan/>}/>
+      <Route path="/Tripzy/Shared/Plan/:UniqueId" element={<SharedPlan/>}/>
     </Routes>
   </BrowserRouter>
   </>
