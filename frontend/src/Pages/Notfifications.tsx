@@ -2,13 +2,9 @@ import { Navbar } from "../Components/Navabar";
 import { Button } from "../Ui/Buttons/Button";
 import { DoubleCheck } from "../Ui/Icons/DoubleCheck";
 import { useState } from "react";
-import { NotificationsCard } from "../Components/NotificationsCard";
-
 export function Notifictions()
 {
-    const[ErrorState , SetErrorState] = useState(false);
-    const [LoadingState , SetLoadingState] = useState(false);
-    const [EmptyState , SetEmptyState] = useState(true); 
+    const [EmptyState] = useState(true); 
     return <>
         <Navbar/>
         <div className="pl-[12rem] pr-[12rem] rounded-md">
