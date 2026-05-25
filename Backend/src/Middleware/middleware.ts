@@ -4,7 +4,7 @@ import { ClientErrorStatusCodes } from "../StatusCodes/StatusCodes";
 export function Middleware(req:any,res:any,next:any)
 {
     const token:string = req.headers["authorization"];
-    const check:any = jwt.verify(token , process.env.JWT_SECRET as string);
+    const check:any = jwt.verify(token , process.env.JWT_PASS as string);
     
     if(check)
     {

@@ -117,9 +117,10 @@ To ensure the website feels incredibly fast when accessing shared or recent plan
   - Nested `events` Array: Specific activities sorted by day and time.
 
 ## Deployment Details
-- **Frontend:** Hosted on **Vercel** for optimal global edge delivery. The `vercel.json` ensures smooth SPA routing.
-- **Backend:** Hosted on **Render**. 
-- **BetterStack Integration:** A `/api/health` endpoint is configured in the backend and integrated with BetterStack. This creates periodic health checks, ensuring the Render instance does not spin down due to inactivity.
+- **Frontend:** Hosted on **Vercel** for optimal global edge delivery. The `vercel.json` ensures smooth SPA routing (`rewrites` to `index.html`).
+- **Backend:** Designed to be hosted on **Vercel** (Serverless Functions) or **Render**.
+  - **Vercel Serverless:** The Express app is exported without calling `app.listen()` directly when `VERCEL` is active in the environment. The MongoDB connection is established globally to handle stateless executions.
+  - **Render (Alternative):** A `/api/health` endpoint is configured in the backend and integrated with BetterStack. This creates periodic health checks, ensuring the instance does not spin down due to inactivity.
 
 ## Screenshots
 
