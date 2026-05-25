@@ -15,9 +15,15 @@ let isRedisConnected = false;
 // Initialize the Redis client and establish event handlers.
 // If Redis connection fails, we gracefully degrade to the local in-memory fallback.
 const initRedis = async () => {
+    const redisUrl = process.env.REDIS_URL;
+    if (!redisUrl) {
+        console.log("No REDIS_URL provided. Gracefully defaulting to in-memory fallback.");
+        isRedisConnected = false;
+        return;
+    }
     try {
         redisClient = createClient({
-            url: process.env.REDIS_URL || "redis://localhost:6379"
+            url: redisUrl
         });
 
         redisClient.on("error", (err: any) => {
