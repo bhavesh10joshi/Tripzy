@@ -4,7 +4,7 @@ import { Middleware } from "../../Middleware/middleware";
 import { generateItinerary } from "../Services/GeminiApi";
 import { retry } from "../Services/retry";
 import { Router } from "express";
-import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 import { refineItinerary } from "../Services/GeminiApi";
 import { getCache, setCache, deleteCache } from "../../Services/redisService";
 
@@ -25,7 +25,7 @@ PlanRouter.post("/New", Middleware, async function(req: any, res: any) {
                 UsersName : UserDetails.nameofUser , 
                 userId: UserId,
                 ...PlanData, 
-                UniqueId: uuidv4()
+                UniqueId: crypto.randomUUID()
             });
 
             if (done) 

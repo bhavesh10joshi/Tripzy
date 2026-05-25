@@ -119,7 +119,7 @@ To ensure the website feels incredibly fast when accessing shared or recent plan
 ## Deployment Details
 - **Frontend:** Hosted on **Vercel** for optimal global edge delivery. The `vercel.json` ensures smooth SPA routing (`rewrites` to `index.html`).
 - **Backend:** Designed to be hosted on **Vercel** (Serverless Functions) or **Render**.
-  - **Vercel Serverless:** The Express app is exported without calling `app.listen()` directly when `VERCEL` is active in the environment. The MongoDB connection is established globally to handle stateless executions.
+  - **Vercel Serverless:** The Express app is exported without calling `app.listen()` directly when `VERCEL` is active in the environment. The MongoDB connection is established globally to handle stateless executions. Native Node.js `crypto.randomUUID()` is used to avoid ESM module resolution errors common with external packages on Vercel.
   - **Render (Alternative):** A `/api/health` endpoint is configured in the backend and integrated with BetterStack. This creates periodic health checks, ensuring the instance does not spin down due to inactivity.
 
 ## Screenshots
