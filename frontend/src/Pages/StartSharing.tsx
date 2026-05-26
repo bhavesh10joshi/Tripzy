@@ -119,7 +119,7 @@ export function MyTripShare() {
   }
 
   function HandleCopyLink() {
-    const shareUrl = `${VITE_BACKEND_URL}/Tripzy/Api/plan/Share/${PlanUniqueId}`;
+    const shareUrl = `https://tripzy-gamma.vercel.app/Tripzy/Api/plan/Share/${PlanUniqueId}`;
     navigator.clipboard.writeText(shareUrl)
       .catch(() => {
         SetErrorDetail("Failed to copy link structure layout framework.");
