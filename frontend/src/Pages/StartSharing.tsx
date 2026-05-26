@@ -177,7 +177,7 @@ export function MyTripShare() {
                         <Link />
                       </div>
                       <span className="text-blue-500 font-medium text-sm truncate">
-                        {`${VITE_BACKEND_URL}/Tripzy/Api/plan/Share/${PlanUniqueId}`}
+                        {`https://tripzy-gamma.vercel.app/Tripzy/Api/plan/Share/${PlanUniqueId}`}
                       </span>
                     </div>
                     <button onClick={HandleCopyLink} className="text-blue-500 hover:text-blue-600 font-mono text-xs font-bold bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition-all active:scale-95 flex-shrink-0 cursor-pointer">
